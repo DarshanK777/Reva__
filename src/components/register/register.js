@@ -27,9 +27,9 @@ class Register extends React.Component{
                     </div>
 
                     <form onSubmit={this.handleRegister}>
-                        <input type="text" placeholder="Username"/>      
-                        <input type="text" placeholder="Password"/>  
-                        <input type="text" placeholder="Email"/>  
+                        <input type="text" className="input" placeholder="Username"/>      
+                        <input type="password" className="input"  placeholder="Password"/>  
+                        <input type="email" className="input"  placeholder="Email"/>  
                         <button type="submit"> Register</button> 
                     </form>
                     <div className="register-signup">

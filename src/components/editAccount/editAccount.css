@@ -1,20 +1,21 @@
-.editProfile-container{
+.editAccount-container{
     height: calc(100vh - 100px);
     width: 100%;
-    background: lightskyblue;
+    /* background: lightskyblue; */
     display: flex;
     justify-content: center;
 }
 
-.editProfile-content{
+.editAccount-content{
     height: 100%;
     width: 70%;
     padding: 2%;
     background: white;
+    
 }
 
 
-.editProfile-contentBox{
+.editAccount-contentBox{
     height: 100%;
     width: 100%;
     background: white;
@@ -24,3 +25,6 @@
     grid-template-columns: 1fr 3fr;
 }
 
+.editAccount-Options{
+    border-right: 1px solid #dbdbdb;
+}

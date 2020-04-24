@@ -4,21 +4,22 @@ import './editProfileOptions.css'
 class EPOptions extends React.Component{
 
     state = {
-        active : '' 
+        active : 0 
     }  
 
     handleOnClick = (index) =>{
         this.setState({
             active: index,
-
         })
-        console.log(this.props)
+
+        this.props.selectOption(index)
+       
     }
 
     render(){
 
         const optionList = ['Edit Profile', 'Change Password', 'Change Email']
-
+ 
         return(
             <div className='EPOptions-container'>
                 {

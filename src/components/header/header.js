@@ -23,7 +23,7 @@ const Header= ({history}) =>{
                 <img className="images" src="/images/icons/triangle.svg" alt="usasd" />
 
                 {
-                    pathname.includes('profile') ? <img className="images" src="/images/icons/edit.svg" onClick={() => history.push({pathname:`/editProfile/1/`})} alt="usasd" /> 
+                    pathname.includes('profile') ? <img className="images" src="/images/icons/edit.svg" onClick={() => history.push({pathname:`/accounts/`})} alt="usasd" /> 
                 :
                 <img className="images" src="/images/icons/circle.svg" onClick={() => history.push({pathname:`/profile/1/`})} alt="usasd" />
                 }

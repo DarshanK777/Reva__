@@ -5,7 +5,7 @@ import UserProfile from './components/userProfile/userProfile'
 import AddPost from './components/addPost/addPost'
 import Login  from './components/login/login'
 import Register  from './components/register/register'
-import EditProfile from './components/editProfile/editProfile'
+import EditAccount from './components/editAccount/editAccount'
 
 
 
@@ -17,7 +17,7 @@ const BaseRouter = () =>(
         <Route exact path='/addPost/' component ={AddPost} />
         <Route exact path='/login/' component ={Login} />
         <Route exact path='/register/' component ={Register} />
-        <Route exact path='/editProfile/:id' component={EditProfile}/>
+        <Route exact path='/accounts/' component={EditAccount}/>
 
 
 

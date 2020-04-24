@@ -1,0 +1,139 @@
+
+.completepost-flexbox{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.completepost-container{
+    width: 70%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    justify-content: center;
+    align-items: center;
+}
+.completepost-img-container{
+    /* width: 100%;
+    height: 100%; */
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+}
+
+.completepost-img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.completepost-content{
+    width: 100%;
+    /* background: lightskyblue; */
+    height: 100%;
+    position: relative;
+    padding: 5%;
+}
+
+.completepost-caption-title{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.completepost-caption{
+    overflow-wrap: break-word;
+    resize: none;
+    width: 100%;
+    max-height: 100px;
+    min-height: 70px;
+    margin: 2% 0;
+    border: 0;
+    outline: 0;
+}
+
+.completepost-caption::placeholder {
+    opacity: 0.4; 
+  }
+  
+
+.completepost-caption:focus{
+    border-bottom: 1px solid;
+}
+
+.completepost-btn-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.completepost-submit-btn{
+    /* width: 20px; */
+    padding: 8px 15px;
+    width: 35%;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 0;
+    color: white;
+    background: lightskyblue;
+}
+
+.completepost-submit-btn:hover{
+    -webkit-box-shadow: 3px 0px 28px -13px rgba(0,0,0,0.7);
+    -moz-box-shadow: 3px 0px 28px -13px rgba(0,0,0,0.7);
+    box-shadow: 3px 0px 28px -13px rgba(0,0,0,0.7);
+}
+
+.completepost-submit-btn:active{
+    transform: translateY(2px);
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.7)
+}
+
+@media(max-width: 1400px){
+    .completepost-container{
+        width: 85%;
+        
+    }
+}
+
+@media(max-width: 1024px){
+    .completepost-container{
+        width: 75%;
+        padding: 0;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1.7fr 1fr;
+    }
+    .completepost-img-container{
+        padding: 0;
+    }
+
+    .completepost-content{
+        padding: 5% 0 ;
+    }
+
+}
+
+@media(max-width: 760px){
+    .completepost-container{
+        width: 95%;
+        grid-template-rows: 2fr 1fr;
+    }
+
+    .completepost-img{
+        align-self: start;
+    }
+    
+    .completepost-content{
+        padding: 5% 0 ;
+    }
+    
+    .completepost-btn-container{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+
+}

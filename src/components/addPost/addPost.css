@@ -1,0 +1,56 @@
+.addPost-container{
+    height: calc(100vh - 100px);
+    width: 100%;
+    /* background: blue; */
+    padding: 0;
+    margin: 0;
+}
+
+.dropzone{
+    width: 100%;
+    height: calc(100vh - 100px);
+    background: lightblue;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.crop-container{
+    width: 100%;
+    height: 100%;
+    /* background: lightcoral; */
+    position: relative;
+}
+
+.css-bdjl4r{
+    color: #ffffffa1 !important;
+}
+
+.crop-btn{
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+    width: 180px;
+    height: 40px;
+    border-radius: 15px;
+    background:#218CEE;
+    outline: 0;
+    color: #fff;
+    font-size: 16px;
+    border: 0;
+    box-shadow: 3px 0px 28px -13px rgba(0,0,0,0.7);
+}
+
+.crop-btn:active{
+    transform: translateY(2px);
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.7)
+}
+
+@media(max-width: 760px){
+    .crop-container{
+        overflow: scroll;
+    }
+}

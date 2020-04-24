@@ -1,0 +1,33 @@
+.grid-container{
+    /* background: #fff; */
+    width: 100%;
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* .grid-container::-webkit-scrollbar { 
+    display: none; 
+    width: 0 !important;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}  */
+
+@media (max-width: 1024px) {
+    
+    .grid-container{
+        grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+
+  @media (max-width: 760px) {
+    .grid-container{
+        
+        grid-template-columns: 1fr;
+    }
+  }
+
+  

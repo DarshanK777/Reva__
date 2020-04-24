@@ -1,0 +1,31 @@
+.EPOptions-container{
+    height: 100%;
+    width: 100%;
+}
+
+.EPOptions-option{
+    width: 100%;
+    height: auto;
+    padding: 6%;
+    min-height: 55px;
+    background: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+}
+
+.option-active{
+    position: absolute;
+    height: 100%;
+    width: 2px;
+    background: black;
+    left: 0;
+    top: 0;
+}
+
+.active{
+    background:#00000005;
+}

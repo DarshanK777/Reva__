@@ -1,0 +1,47 @@
+.grid-item{
+    width: 100%;
+    
+}
+.grid-item img{
+    width: 100%;
+    margin: 0;
+}
+
+.grid-item-details{
+    margin-top: 0;
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0 8px;
+}
+
+.avatar { 
+    height: 30px;
+    width: 30px;
+    background: #ccc;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.grid-username{
+    font-size: 12px;
+}
+.grid-details-content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+} 
+/* 
+@media (max-width: 1400px){
+    .grid-item{
+        width: 100%;
+        min-width: 312px;
+        
+    }
+    .grid-item img{
+        width: 100%;
+        margin: 0;
+    }
+    
+} */

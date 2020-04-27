@@ -1,4 +1,4 @@
-export const list =[
+export const searchFeedData = [
     {
         id: 1,
         username: 'asdasdasd',
@@ -54,4 +54,4 @@ export const list =[
         username: 'asdasdasd',
         image: '/images/04.jpg'
     },
-] 
+]

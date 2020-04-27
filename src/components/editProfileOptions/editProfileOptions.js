@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import './editProfileOptions.css'
 
 class EPOptions extends React.Component{
@@ -26,7 +26,12 @@ class EPOptions extends React.Component{
                     optionList.map((option, index)=>(
                         <div className={this.state.active === index ? "EPOptions-option active" : "EPOptions-option" }  key={index} onClick={() => this.handleOnClick(index)}>
                             {
-                                this.state.active === index ?<div className="option-active"></div> : <div></div>
+                                this.state.active === index ?
+                                <Fragment>
+                                    <div className="option-active-left"></div> 
+                                    <div className="option-active-right"></div>
+                                </Fragment>
+                                : <div></div>
                             }
                             {option}
                         </div>

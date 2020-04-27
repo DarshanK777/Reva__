@@ -1,0 +1,39 @@
+.searchpage-container{
+    width: 70%;
+    height: calc(100vh - 90px);
+    /* background: lightblue; */
+    padding: 1% 2%;
+}
+
+.searchgrid-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-gap: 15px;
+}
+
+@media(max-width: 1024px){
+    .searchpage-container{
+        width: 90%;
+    }
+}
+
+@media(max-width: 768px){
+    .searchpage-container{
+        margin-top: 5px;
+    }
+    .searchgrid-container{
+        grid-gap: 8px;
+    }
+}
+
+@media(max-width: 480px){
+    .searchpage-container{
+        width: 100%;
+    }
+    .searchgrid-container{
+        grid-gap: 5px;
+    }
+}
+

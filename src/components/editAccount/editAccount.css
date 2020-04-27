@@ -28,3 +28,31 @@
 .editAccount-Options{
     border-right: 1px solid #dbdbdb;
 }
+
+@media(max-width: 1024px){
+    .editAccount-content{
+        width: 100%;
+    }
+}
+
+@media(max-width: 480px){
+    .editAccount-container{
+        height: calc(100vh - 80px);
+    }
+    .editAccount-content{
+        width: 100%;
+        padding: 0;
+        border: 0px;
+    }
+
+    .editAccount-contentBox{
+        height: 100%;
+        width: 100%;
+        background: white;
+        border: 0px solid #dbdbdb;
+        border-radius: 5px;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 80px auto);
+    }
+}

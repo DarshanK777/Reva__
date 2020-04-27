@@ -7,9 +7,8 @@ import {list} from '../../data/temporaryData'
 class Grid extends Component{
 
     state={
-        list: list
+        list:list
     }
-
 
     render(){
         return(

@@ -1,18 +1,40 @@
 import React from 'react'
 import './register.css'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import * as actions from '../../store/actions/auth'
 
 class Register extends React.Component{
 
-    handleValidation = () =>{
+    state= {
+        username: '',
+        password1: '',
+        password2: '',
+        fullname: '',
+        email: ''
+
+
+    }
+
+    handleSubmit = event =>{
+        event.preventDefault()
+        console.log(this.state)
+        this.props.onAuth(this.state.username,
+                        this.state.email,
+                        this.state.password1,
+                        this.state.password2,
+                        this.state.fullname
+                        )
+    }
+
+    handleChange = event =>{
+        this.setState({
+            [event.target.name] : event.target.value
+        })
+        
         
     }
 
-
-    handleRegister = (e) =>{
-        e.preventDefault()
-        return this.props.history.push('/')
-    }
 
     render(){
         return(
@@ -26,10 +48,48 @@ class Register extends React.Component{
                         Register
                     </div>
 
-                    <form onSubmit={this.handleRegister}>
-                        <input type="text" className="input" placeholder="Username"/>      
-                        <input type="password" className="input"  placeholder="Password"/>  
-                        <input type="email" className="input"  placeholder="Email"/>  
+                    <form onSubmit={this.handleSubmit}>
+                        <input 
+                            type="text" 
+                            className="input" 
+                            placeholder="Username"
+                            name='username'
+                            value={this.state.username}
+                            onChange={this.handleChange}
+                        /> 
+                        <input
+                            type="text"
+                            className="input"  
+                            placeholder="Full Name"
+                            name='fullname'
+                            value={this.state.fullname}
+                            onChange={this.handleChange}
+                        />       
+                        <input
+                            type="email"
+                            className="input"  
+                            placeholder="Email"
+                            name='email'
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                        />  
+                        <input 
+                            type="password" 
+                            className="input"  
+                            placeholder="Password"
+                            name='password1'
+                            value={this.state.password1}
+                            onChange={this.handleChange}
+                        />  
+                         <input 
+                            type="password" 
+                            className="input"  
+                            placeholder="Password"
+                            name='password2'
+                            value={this.state.password2}
+                            onChange={this.handleChange}
+                        /> 
+                        
                         <button type="submit"> Register</button> 
                     </form>
                     <div className="register-signup">
@@ -45,4 +105,18 @@ class Register extends React.Component{
     }
 }
 
-export default Register
+
+const mapStateToProps = (state) =>{
+    return{
+        loading: state.loading,
+        error: state.error
+    }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+    return{
+        onAuth: (username, email, password1, password2, fullname) => dispatch(actions.authSignUp(username, email, password1, password2, fullname))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

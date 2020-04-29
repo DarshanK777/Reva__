@@ -4,8 +4,6 @@ import SearchGrid from '../searchGrid/searchGrid'
 import SearchInput from '../searchInput/searchInput'
 import {searchFeedData} from '../../data/searchFeedData'
 
-
-
 class SearchPage extends React.Component{
 
     state = {
@@ -18,14 +16,12 @@ class SearchPage extends React.Component{
         var tempArray = [];
         
         for (index = 0; index < arrayLength; index += 11) {
-            var myChunk = myArray.slice(index, index+11);
-            // Do something if you want with the group
-            tempArray.push(myChunk);
+            var myChunk = myArray.slice(index, index+11)
+            tempArray.push(myChunk)
         }
     
         return tempArray;
     }
-    
     
     render(){
 

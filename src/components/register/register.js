@@ -10,7 +10,6 @@ class Register extends React.Component{
         username: '',
         password1: '',
         password2: '',
-        fullname: '',
         email: ''
 
 
@@ -23,8 +22,8 @@ class Register extends React.Component{
                         this.state.email,
                         this.state.password1,
                         this.state.password2,
-                        this.state.fullname
                         )
+        this.history.push('/')
     }
 
     handleChange = event =>{
@@ -33,6 +32,14 @@ class Register extends React.Component{
         })
         
         
+    }
+
+    componentDidMount(){
+        const token = localStorage.getItem('user')
+        if(token !== null){
+            console.log(token)
+          this.props.history.push('/')
+        }
     }
 
 
@@ -56,15 +63,7 @@ class Register extends React.Component{
                             name='username'
                             value={this.state.username}
                             onChange={this.handleChange}
-                        /> 
-                        <input
-                            type="text"
-                            className="input"  
-                            placeholder="Full Name"
-                            name='fullname'
-                            value={this.state.fullname}
-                            onChange={this.handleChange}
-                        />       
+                        />        
                         <input
                             type="email"
                             className="input"  
@@ -115,7 +114,7 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        onAuth: (username, email, password1, password2, fullname) => dispatch(actions.authSignUp(username, email, password1, password2, fullname))
+        onAuth: (username, email, password1, password2) => dispatch(actions.authSignUp(username, email, password1, password2)),
     }
 }
 

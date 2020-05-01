@@ -1,5 +1,7 @@
 import * as actionTypes from './actionTypes'
 import axios from 'axios'
+import React from 'react'
+import { Redirect } from 'react-router-dom'
 
 export const authStart = () =>{
     return{
@@ -9,7 +11,7 @@ export const authStart = () =>{
 }
 export const authSuccess = token =>{
     return{
-        type: actionTypes.AUTH_SUCCESS,
+        type: actionTypes.AUTH_SUCCESS, 
         token: token
         
     }
@@ -24,7 +26,7 @@ export const authFail =  error =>{
 }
 
 export const logout = () =>{
-    localStorage.removeItem('user')
+    localStorage.removeItem('token')
     localStorage.removeItem('expirationDate')
     return{
         type: actionTypes.AUTH_LOGOUT
@@ -54,6 +56,8 @@ export const authLogin = (username, password) =>{
             localStorage.setItem('expirationDate', expirationDate)
             dispatch(authSuccess(token))
             dispatch(checkAuthTimeout(3600))
+            console.log('this is working')
+            return <Redirect to='/' />
         })
         .catch(err=>{
             dispatch(authFail(err))
@@ -61,7 +65,7 @@ export const authLogin = (username, password) =>{
     }    
 }
 
-export const authSignUp = (username, email, password1, password2, fullname) =>{
+export const authSignUp = (username, email, password1, password2) =>{
     return dispatch => {
         dispatch(authStart());
         axios.post('http://127.0.0.1:8000/rest-auth/registration/',{
@@ -69,7 +73,6 @@ export const authSignUp = (username, email, password1, password2, fullname) =>{
             email: email,
             password1: password1,
             password2: password2,
-            fullname: fullname
         })
         .then(res =>{
             const token = res.data.key;

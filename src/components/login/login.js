@@ -2,6 +2,7 @@ import React from 'react'
 import './login.css'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import * as  actions from '../../store/actions/auth'
 
 class Login extends React.Component{
@@ -22,8 +23,13 @@ class Login extends React.Component{
         this.setState({
             [event.target.name] : event.target.value
         })
-        
-        
+    }
+
+    componentDidMount(){
+        // const token = localStorage.getItem('token')
+        // if(token !== null){
+        //   this.props.history.push('/')
+        // }
     }
 
     render(){
@@ -85,4 +91,4 @@ const mapDispatchToProps = (dispatch) =>{
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))

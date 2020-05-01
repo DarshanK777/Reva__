@@ -1,0 +1,44 @@
+.home-container{
+    margin: 1% 0;
+    width: 100%;
+}
+
+.home-content{
+    width: 100%;
+    height: calc(100vh - 100px);
+    /* background: lightskyblue; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.home-content span{
+    font-size: 32px;
+    margin-bottom: 2%;
+}
+
+.home-links{
+    display: flex;
+}
+
+.home-links span{
+    font-size: 20px;
+    margin: 0 20px;
+    /* background: red; */
+    padding: 10px;
+    border-radius: 12px;
+    text-decoration: none;
+}
+
+.home-links a{
+    color: white;
+    text-decoration: none;
+}
+
+#reg{
+    background: #81d481;
+}
+
+#log{
+    background: lightskyblue;
+}

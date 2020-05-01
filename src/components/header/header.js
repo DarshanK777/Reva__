@@ -8,7 +8,7 @@ const Header= ({history}) =>{
     return(
         <div className="header">
             <div className="left">
-                <img className="logo" src="/images/icons/insta.svg"  onClick={() => history.push({pathname:`/`})} alt="usasd" />
+                <img className="logo" src="/images/icons/insta.svg"  onClick={() => history.push({pathname:`/homeFeed`})} alt="usasd" />
             </div>
 
             <div className="mid">

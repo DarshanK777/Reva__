@@ -5,21 +5,35 @@ import {BrowserRouter as Router } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from './store/actions/auth'
 
+
+
 class App extends React.Component {
 
+  
   state = {
-
+      mounted: false
   }
+
 
   componentDidMount(){
-    this.props.onTryAutoSighUp()
+      if(!this.state.mounted){
+          this.props.onTryAutoSighUp()  
+          this.setState({
+              mounted: true
+          })
+      }
   }
+  
 
   render(){
     return (
       <Router>
         <div className="App" >
-          <Body {...this.props} />
+          {
+            console.log('app props: ', this.props)
+          }
+          <Body {...this.props}/>
+          
         </div>
       </Router>
     )
@@ -27,7 +41,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state =>{
-  return{
+  return {
     isAuthenticated: state.token !== null
   }
 }

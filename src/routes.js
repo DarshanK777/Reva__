@@ -7,20 +7,19 @@ import Login  from './components/login/login'
 import Register  from './components/register/register'
 import EditAccount from './components/editAccount/editAccount'
 import SearchPage from './components/searchPage/searchPage'
-
-
+import Home from './components/home/home'
+import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 
 const BaseRouter = () =>(
     <Switch>
-        <Route exact path='/' component = {FeedGrid} />
+        <PrivateRoute exact path='/' component = {Home} />
+        <Route exact path='/homeFeed' component = {FeedGrid} />
         <Route exact path='/profile/:id' component={UserProfile}/>
         <Route exact path='/addPost/' component ={AddPost} />
         <Route exact path='/login/' component ={Login} />
         <Route exact path='/register/' component ={Register} />
         <Route exact path='/accounts/' component={EditAccount}/>
         <Route exact path='/searchFeed/' component={SearchPage}/>
-
-
 
 
     </Switch>   

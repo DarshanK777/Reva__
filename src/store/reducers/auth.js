@@ -19,20 +19,21 @@ const authSuccess = (state, action) =>{
         loading: false,
         token: action.token,
         error: null
-    })
+    }) 
 }
 
 
 const authFail = (state, action) =>{
     return updatedObject(state, {
         loading: false,
-        error: action.error
-    })
+        error: action.error,   
+    }) 
 }
 
 const authLogout = (state, action) =>{
     return updatedObject(state, {
-        token: null
+        token: null,
+        isLoggedIn: false,
     })
 }
 

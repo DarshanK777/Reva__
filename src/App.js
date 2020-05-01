@@ -9,19 +9,8 @@ import * as actions from './store/actions/auth'
 
 class App extends React.Component {
 
-  
-  state = {
-      mounted: false
-  }
-
-
   componentDidMount(){
-      if(!this.state.mounted){
-          this.props.onTryAutoSighUp()  
-          this.setState({
-              mounted: true
-          })
-      }
+      this.props.onTryAutoSighUp()          
   }
   
 

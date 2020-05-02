@@ -3,14 +3,15 @@ import Body from './components/body/body'
 import './App.css'
 import {BrowserRouter as Router } from 'react-router-dom'
 import { connect } from 'react-redux'
-import * as actions from './store/actions/auth'
+import {loadUser} from './redux/actions/auth'
+
 
 
 
 class App extends React.Component {
 
   componentDidMount(){
-      this.props.onTryAutoSighUp()          
+    this.props.onLoadUser()
   }
   
 
@@ -29,16 +30,10 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state =>{
-  return {
-    isAuthenticated: state.token !== null
-  }
-}
-
 const mapDispatchToProps = dispatch =>{
-  return{
-    onTryAutoSighUp: () => dispatch(actions.authCheckState())
+  return {
+    onLoadUser : () => dispatch(loadUser())
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps )(App);

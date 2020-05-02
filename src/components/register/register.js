@@ -1,8 +1,8 @@
 import React from 'react'
 import './register.css'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import * as actions from '../../store/actions/auth'
+import { register } from '../../redux/actions/auth'
 
 class Register extends React.Component{
 
@@ -17,13 +17,11 @@ class Register extends React.Component{
 
     handleSubmit = event =>{
         event.preventDefault()
-        console.log(this.state)
-        this.props.onAuth(this.state.username,
+        this.props.register(this.state.username,
                         this.state.email,
                         this.state.password1,
                         this.state.password2,
                         )
-        this.history.push('/')
     }
 
     handleChange = event =>{
@@ -34,16 +32,10 @@ class Register extends React.Component{
         
     }
 
-    componentDidMount(){
-        const token = localStorage.getItem('user')
-        if(token !== null){
-            console.log(token)
-          this.props.history.push('/')
-        }
-    }
-
-
     render(){
+        if(this.props.isAuthenticated){
+            return <Redirect to="/homeFeed" />
+        }
         return(
             <div className='register-container'>
                 <div className="register-content">
@@ -104,18 +96,8 @@ class Register extends React.Component{
     }
 }
 
+const mapStateToProps = state =>({
+    isAuthenticated : state.isAuthenticated
+})
 
-const mapStateToProps = (state) =>{
-    return{
-        loading: state.loading,
-        error: state.error
-    }
-}
-
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        onAuth: (username, email, password1, password2) => dispatch(actions.authSignUp(username, email, password1, password2)),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+export default connect(mapStateToProps, { register })(Register)

@@ -24,7 +24,9 @@ class EditProfilePage extends React.Component{
                     {
                          console.log(this.state.gender)
                     }
-                    <label className="editProfile-label">Name</label>
+                    <label className="editProfile-label">First Name</label>
+                    <input type="text" className="editProfile-input" />
+                    <label className="editProfile-label">Last Name</label>
                     <input type="text" className="editProfile-input" />
                     <label className="editProfile-label">Username</label>
                     <input type="text" className="editProfile-input" /> 

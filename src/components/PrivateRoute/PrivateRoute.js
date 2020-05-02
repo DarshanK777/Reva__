@@ -1,28 +1,31 @@
-    import React from 'react'
-    import {connect} from 'react-redux'
-    import {Route, Redirect } from 'react-router-dom'
+import React from 'react'
+import {connect} from 'react-redux'
+import {Route, Redirect } from 'react-router-dom'
+// import auth from '../../redux/reducers/auth'
 
-    const PrivateRoute = ({component: Component, isAuthenticated, ...rest}) =>{
-        return(
-            <Route {...rest} render={
-                (props) => {
-                    if(isAuthenticated) { 
-                        console.log(isAuthenticated)
-                    return <Component {...props}/>
-                    }else{
-                        console.log(isAuthenticated)
-                        return <Redirect to="/login"/>
-                    }
-                    
+const PrivateRoute = ({component: Component, auth, history, ...rest}) =>{
+    return(
+        <Route {...rest} render={
+            (props) => {
+                console.log(auth)
+                if(auth.isLoading){
+                    return<h1>Loading</h1>
+                }else if(!auth.isAuthenticated){
+                    return <Redirect to={{pathname: "/login/", prevLoc: { from : props.location}}}/>
+                }else{
+                    return <Component {...props} />
                 }
-            }/>
-        )
-    }
+                
+            }
+        }/>
+    )
+}
 
-    const mapStateToProps = state =>{
-        return{
-            isAuthenticated: state.token !== null
-        }
+const mapStateToProps = (state) =>{
+    return{
+        auth: state
     }
+}
 
-    export default connect(mapStateToProps, null)(PrivateRoute)
+
+export default connect(mapStateToProps)(PrivateRoute)

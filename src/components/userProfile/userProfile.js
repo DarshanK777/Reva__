@@ -1,11 +1,13 @@
 import React from 'react'
 import './userProfile.css'
 import Grid from '../grid/grid'
-import * as actions from '../../store/actions/auth'
-import { useDispatch } from 'react-redux'
+import {connect, useSelector, useDispatch} from 'react-redux'
+import { logout } from '../../redux/actions/auth'
 
 const UserProfile = () =>{
+
     const dispatch = useDispatch()
+
     return(
         <div className="profile-container">
             <div className="profileSidebar">
@@ -92,8 +94,8 @@ const UserProfile = () =>{
                     </div>
                     <div className="logout">
                         <span onClick={
-                            () => dispatch(actions.logout())
-                        }>
+                            ()=>dispatch(logout())
+                        } >
                             Logout
                         </span>
                     </div>

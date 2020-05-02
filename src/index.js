@@ -4,14 +4,14 @@ import './index.css';
 import App from './App';
 import { createStore, applyMiddleware } from 'redux'
 import * as serviceWorker from './serviceWorker';
-import reducer from './store/reducers/auth'
+import rootReducer from './redux/reducers/auth'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux'
 
 
 
-const store = createStore(reducer, composeWithDevTools(
+const store = createStore(rootReducer, composeWithDevTools(
   applyMiddleware(thunk)
 ))
 

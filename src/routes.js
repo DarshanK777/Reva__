@@ -12,14 +12,14 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 
 const BaseRouter = () =>(
     <Switch>
-        <PrivateRoute exact path='/' component = {Home} />
-        <Route exact path='/homeFeed' component = {FeedGrid} />
-        <Route exact path='/profile/:id' component={UserProfile}/>
-        <Route exact path='/addPost/' component ={AddPost} />
+        <Route exact path='/' component = {Home} />
+        <PrivateRoute exact path='/homeFeed' component = {FeedGrid} />
+        <PrivateRoute exact path='/profile/:id' component={UserProfile}/>
+        <PrivateRoute exact path='/addPost/' component ={AddPost} />
         <Route exact path='/login/' component ={Login} />
         <Route exact path='/register/' component ={Register} />
-        <Route exact path='/accounts/' component={EditAccount}/>
-        <Route exact path='/searchFeed/' component={SearchPage}/>
+        <PrivateRoute exact path='/accounts/' component={EditAccount}/>
+        <PrivateRoute exact path='/searchFeed/' component={SearchPage}/>
 
 
     </Switch>   

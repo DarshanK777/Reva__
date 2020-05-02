@@ -1,9 +1,9 @@
 import React from 'react'
 import './login.css'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import * as  actions from '../../store/actions/auth'
+import { login } from '../../redux/actions/auth'
 
 class Login extends React.Component{
 
@@ -16,7 +16,7 @@ class Login extends React.Component{
     handleSubmit = event =>{
         event.preventDefault()
         console.log(this.state)
-        this.props.onAuth(this.state.username, this.state.password)
+        this.props.login(this.state.username, this.state.password)
     }
 
     handleChange = event =>{
@@ -25,14 +25,32 @@ class Login extends React.Component{
         })
     }
 
-    componentDidMount(){
-        // const token = localStorage.getItem('token')
-        // if(token !== null){
-        //   this.props.history.push('/')
-        // }
-    }
-
     render(){
+        // console.log("state",this.props.location)
+        if(this.props.isAuthenticated){
+            const { location } = this.props
+            const { prevLoc } = location
+            console.log("state",this.props.location)
+
+            if (prevLoc && prevLoc.from) {
+                return <Redirect  to={prevLoc.from} />
+            }
+            return <Redirect  to="/" />
+        }
+
+        // if(this.props.isAuthenticated){
+        //     const { location } = this.props;
+        //     const { history } = this.props
+        //     const { prevLoc } = location;
+        //     if (prevLoc && prevLoc.from) {
+        //     history.replace(prevLoc.from);
+        //     }
+        //     // else go to home
+        //     else {
+        //     history.replace('/');
+        //     }
+        // }
+
         return(
             <div className='login-container'>
                 <div className="login-content">
@@ -78,17 +96,8 @@ class Login extends React.Component{
     }
 }
 
-const mapStateToProps = (state) =>{
-    return{
-        loading: state.loading,
-        error: state.error
-    }
-}
+const mapStateToProps = state =>({
+    isAuthenticated : state.isAuthenticated
+})
 
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        onAuth: (username, password) => dispatch(actions.authLogin(username, password))
-    }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))
+export default withRouter(connect(mapStateToProps, {login})(Login))

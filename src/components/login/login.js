@@ -15,7 +15,6 @@ class Login extends React.Component{
 
     handleSubmit = event =>{
         event.preventDefault()
-        console.log(this.state)
         this.props.login(this.state.username, this.state.password)
     }
 
@@ -30,26 +29,11 @@ class Login extends React.Component{
         if(this.props.isAuthenticated){
             const { location } = this.props
             const { prevLoc } = location
-            console.log("state",this.props.location)
-
             if (prevLoc && prevLoc.from) {
                 return <Redirect  to={prevLoc.from} />
             }
             return <Redirect  to="/" />
         }
-
-        // if(this.props.isAuthenticated){
-        //     const { location } = this.props;
-        //     const { history } = this.props
-        //     const { prevLoc } = location;
-        //     if (prevLoc && prevLoc.from) {
-        //     history.replace(prevLoc.from);
-        //     }
-        //     // else go to home
-        //     else {
-        //     history.replace('/');
-        //     }
-        // }
 
         return(
             <div className='login-container'>

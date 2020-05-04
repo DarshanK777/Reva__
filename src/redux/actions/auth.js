@@ -22,7 +22,7 @@ export const loadUser = () => (dispatch, getState) =>{
             payload: res.data
     });
     }).catch(err=>{
-        console.log(err.response.data)
+        console.log(err)
         dispatch({
             type: AUTH_ERROR,
 
@@ -48,6 +48,7 @@ export const login = (username, password) => (dispatch) =>{
             type: LOGIN_SUCCESS,
             payload: res.data
     });
+    dispatch(loadUser())
     }).catch(err=>{
         console.log(err.data)
         dispatch({
@@ -77,22 +78,31 @@ export const register = (username,email, password1, password2) => (dispatch) =>{
             type: LOGIN_SUCCESS,
             payload: res.data
     });
-    }).catch(err=>{
-        console.log(err.data)
-        dispatch({
-            type: LOGIN_FAIL,
-
-        })
+    dispatch(loadUser())
+    }).catch(error=>{
+        if (error.response) {
+            console.log(error.response.data);
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: error.response.data
+            })
+        } else if (error.request) {
+            dispatch({ type: REGISTER_FAIL, })
+            console.log(error.request);
+        } else {
+            dispatch({ type: REGISTER_FAIL, })
+            console.log('Error', error.message);
+        }
+        
     })
 }
 
 // LOGOUT
 export const logout = () => (dispatch, getState) =>{
-
+    console.log('called logout')
     axios
     .post('http://127.0.0.1:8000/rest-auth/logout/', null, tokenConfig(getState))
     .then((res) => {
-      dispatch({ type: 'CLEAR_LEADS' });
       dispatch({
         type: LOGOUT_SUCCESS,
       });

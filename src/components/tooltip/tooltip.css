@@ -1,0 +1,11 @@
+.tooltip-holder img{
+    width: 100%;
+    height: auto;
+}
+
+.tooltip-holder{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}

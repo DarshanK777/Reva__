@@ -30,10 +30,16 @@ class App extends React.Component {
   }
 }
 
+const mapStateToProps = state =>{
+  return{
+    user: state.user
+  }
+}
+
 const mapDispatchToProps = dispatch =>{
   return {
     onLoadUser : () => dispatch(loadUser())
   }
 }
 
-export default connect(null, mapDispatchToProps )(App);
+export default connect(mapStateToProps, mapDispatchToProps )(App);

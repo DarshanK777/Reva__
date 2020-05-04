@@ -6,4 +6,9 @@ export const LOGIN_FAIL = "LOGIN_FAIL"
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS"
 export const REGISTER_FAIL = "REGISTER_FAIL"
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS"
+export const FEED_LOADING = "FEED_LOADING"
+export const FEED_LOADED = "FEED_LOADED"
+export const FEED_ERROR = "FEED_ERROR"
+
+
 

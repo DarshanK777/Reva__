@@ -3,6 +3,7 @@ import './register.css'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { register } from '../../redux/actions/auth'
+import Tooltip from '../tooltip/tooltip'
 
 class Register extends React.Component{
 
@@ -33,8 +34,11 @@ class Register extends React.Component{
     }
 
     render(){
+
+        const { errors } = this.props
+
         if(this.props.isAuthenticated){
-            return <Redirect to="/homeFeed" />
+            return <Redirect to="/" />
         }
         return(
             <div className='register-container'>
@@ -48,38 +52,76 @@ class Register extends React.Component{
                     </div>
 
                     <form onSubmit={this.handleSubmit}>
-                        <input 
-                            type="text" 
-                            className="input" 
-                            placeholder="Username"
-                            name='username'
-                            value={this.state.username}
-                            onChange={this.handleChange}
-                        />        
-                        <input
-                            type="email"
-                            className="input"  
-                            placeholder="Email"
-                            name='email'
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                        />  
-                        <input 
-                            type="password" 
-                            className="input"  
-                            placeholder="Password"
-                            name='password1'
-                            value={this.state.password1}
-                            onChange={this.handleChange}
-                        />  
-                         <input 
-                            type="password" 
-                            className="input"  
-                            placeholder="Password"
-                            name='password2'
-                            value={this.state.password2}
-                            onChange={this.handleChange}
-                        /> 
+                        <div className="register-input-holder">
+                            <input 
+                                type="text" 
+                                className="input" 
+                                placeholder="Username"
+                                name='username'
+                                value={this.state.username}
+                                onChange={this.handleChange}
+                            />  
+                            <div className="register-tooltip">
+                            {
+                                errors?
+                                <Tooltip error={errors.username} />:
+                                null
+                            }
+                            </div>                  
+                        </div>      
+                        <div className='register-input-holder'>
+                            <input
+                                type="email"
+                                className="input"  
+                                placeholder="Email"
+                                name='email'
+                                value={this.state.email}
+                                onChange={this.handleChange}
+                            />  
+                            <div className="register-tooltip">
+                            {
+                                errors?
+                                <Tooltip error={errors.email} />:
+                                null
+                            }
+                            </div>
+                        </div>
+                        <div className="register-input-holder">
+                            <input 
+                                type="password" 
+                                className="input"  
+                                placeholder="Password"
+                                name='password1'
+                                value={this.state.password1}
+                                onChange={this.handleChange}
+                            />  
+                            <div className="register-tooltip">
+                                {
+                                    errors?
+                                    <Tooltip error={errors.password1} />:
+                                    null
+                                }
+                            </div>
+                        </div>
+                            <div className="register-input-holder">
+                            <input 
+                                type="password" 
+                                className="input"  
+                                placeholder="Password"
+                                name='password2'
+                                value={this.state.password2}
+                                onChange={this.handleChange}
+                            /> 
+                            <div className="register-tooltip">
+                                    {
+                                        errors?
+                                        errors.non_field_errors?
+                                            <Tooltip error={errors.non_field_errors}  />:
+                                            <Tooltip error={errors.password1}/>:
+                                            null
+                                    }
+                            </div>
+                        </div>
                         
                         <button type="submit"> Register</button> 
                     </form>
@@ -97,7 +139,8 @@ class Register extends React.Component{
 }
 
 const mapStateToProps = state =>({
-    isAuthenticated : state.isAuthenticated
+    isAuthenticated : state.isAuthenticated,
+    errors : state.errors
 })
 
 export default connect(mapStateToProps, { register })(Register)

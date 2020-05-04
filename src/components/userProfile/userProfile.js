@@ -1,22 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './userProfile.css'
 import Grid from '../grid/grid'
+import {loadUser} from '../../redux/actions/auth'
 import {connect, useSelector, useDispatch} from 'react-redux'
 import { logout } from '../../redux/actions/auth'
 
 const UserProfile = () =>{
 
+    const user = useSelector(state => state.user)
     const dispatch = useDispatch()
+    console.log(user)
+    const name = user.first_name + " " + user.last_name
 
     return(
         <div className="profile-container">
             <div className="profileSidebar">
+                {
+                    console.log(user)
+                }
                 <div className="profileImage">
                     <img src='/images/03.jpg' alt="asd" />
                 </div>
                 <div className="horizontal-content">
                     <div className="topContent">
-                        <span> username</span>
+                        <span> {user.username}</span>
                         <div className="followBtn">
                               <button>
                                 fllw
@@ -52,8 +59,8 @@ const UserProfile = () =>{
                     
 
                     <div className="profileContentDetails">
-                        <span id= "fullsname"> FullName</span>
-                        <span id= "username"> userName </span>
+                        <span id= "fullsname"> {name}</span>
+                        <span id= "username"> {user.username} </span>
                     </div>
                     <div className="profileContentSubDetails">
                         <div className="subInfoDetails">
@@ -80,10 +87,7 @@ const UserProfile = () =>{
                         </div>
                     </div>
                     <div className="bio">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a 
-                            galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 
-                            but also the leap into electronic typesetting, remaining essentially unchanged.
+                            {user.bio}
                     </div>
                 </div>
                 <div className="misc">

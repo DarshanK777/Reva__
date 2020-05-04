@@ -5,13 +5,13 @@ import Cropper from 'react-easy-crop'
 import CompletePost from '../addPostComplete/addPostComplete'
 
 // import getCroppedImg from '../../utils/easy-crop-utils/cropImage'
-// import {image64toCanvasRef} from '../../utils/imageUtils'
+import {extractImageFileExtensionFromBase64} from '../../utils/imageUtils'
 
 const imageMaxSize = 1000000000 // bytes
 const acceptedFileTypesArray = ['image/x-png', 'image/png', 'image/jpg', 'image/jpeg']
 const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
 
-class AddPost extends React.Component{
+class AddPost extends React.Component{ 
     
     constructor(props) {
         super(props);
@@ -60,7 +60,7 @@ class AddPost extends React.Component{
                      const myResult = myFileItemReader.result
                      this.setState({
                          imgSrc: myResult,
-                        //  imgSrcExt: extractImageFileExtensionFromBase64(myResult)
+                         extension: extractImageFileExtensionFromBase64(myResult)
                      })
                  }, false)
                  myFileItemReader.readAsDataURL(currentFile)
@@ -92,14 +92,14 @@ class AddPost extends React.Component{
 
     render(){
 
-        const {imgSrc, croppedAreaPixels} = this.state
+        const {imgSrc, extension, croppedAreaPixels} = this.state
 
         return(
             <div className="addPost-container">
             {
                 this.state.imgSrc !== null ? 
                     this.state.finalCrop === true ?
-                        <CompletePost imgSrc={imgSrc} croppedAreaPixels={croppedAreaPixels} />
+                        <CompletePost imgSrc={imgSrc} extension={extension} croppedAreaPixels={croppedAreaPixels} />
                         :
                         <div className="crop-container">
                             <Cropper

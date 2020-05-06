@@ -152,3 +152,10 @@ REST_FRAMEWORK = {
     ],
     
 }
+
+REST_AUTH_SERIALIZERS = {
+    'TOKEN_SERIALIZER': 'accounts.api.serializers.TokenSerializer',
+}
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

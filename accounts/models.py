@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 
 User = get_user_model()  # getting user model
 
-# Profile model
+# PROFILE MODEL
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # extending user model 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,3 +27,17 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+# FRIENDS MODEL
+class Friends(models.Model):
+    user1 = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)
+    user2 = models.ForeignKey(User, related_name="to_user", on_delete=models.CASCADE)
+    accepted = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user1", "user2")
+
+
+    def __str__(self):
+        return " {} to {}".format(self.user1, self.user2)

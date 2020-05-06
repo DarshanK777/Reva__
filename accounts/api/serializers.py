@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from accounts.models import Profile
+from accounts.models import Profile, Friends
 from django.contrib.auth import get_user_model
+from rest_auth.models import TokenModel
 from django.contrib.auth.validators import UnicodeUsernameValidator
 
 User = get_user_model()
@@ -38,3 +39,24 @@ class UserSerializer(serializers.ModelSerializer):
     def update_or_create_profile(self, user, profile_data):
         Profile.objects.update_or_create(user=user, defaults=profile_data)
 
+class TokenSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer(many=False, read_only=True)  # this is add by myself.
+    class Meta:
+        model = TokenModel
+        fields = ('key', 'user')  
+
+class FriendsSerializer(serializers.ModelSerializer):
+
+    user1 = UserSerializer(read_only=True)
+    user2 = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Friends
+        fields = ('user1', 'user2', 'accepted')
+
+    # def create(self, validated_data, *args, **kwargs):
+    #     print(validated_data)
+    #     username = validated_data.pop('username')
+    #     user = User.objects.filter(username=username)
+    #     print(user)

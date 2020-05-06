@@ -1,4 +1,4 @@
-import {USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS} from '../actions/actionTypes'
+import {USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, POST_SUCCESS, POST_FAIL, FEED_LOADING, FEED_LOADED} from '../actions/actionTypes'
 import { loadUser } from '../actions/auth';
 
 const intialState = {
@@ -6,19 +6,23 @@ const intialState = {
     isAuthenticated: null,
     isLoading: false,
     user: null,
-    errors: null
+    errors: null,
+    feedloaded: null
+    //make a different reducer
+    // postUploaded: null
 };
 
 export default function(state=intialState, action){
     switch(action.type){
         case USER_LOADING:
+        
             return{
                 ...state,
-                isLoading: true
+                isLoading: true,
+                // postUploaded: null
             }
 
         case USER_LOADED:
-            
             return{
                 ...state,
                 isLoading: false,
@@ -32,6 +36,7 @@ export default function(state=intialState, action){
             return{
                 ...state,
                 token: action.payload.key,
+                user: action.payload.user,
                 isAuthenticated: true,
                 isLoading: false,
                 errors: null
@@ -51,6 +56,18 @@ export default function(state=intialState, action){
                 errors: action.payload
             }
 
+        case FEED_LOADED:
+            return{
+                ...state,
+                feedloaded: true,
+                userPosts: action.payload
+            }
+        
+        case FEED_LOADING:
+            return{
+                ...state,
+            }
+        
         default:
             return state
     }

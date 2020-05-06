@@ -9,6 +9,9 @@ export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS"
 export const FEED_LOADING = "FEED_LOADING"
 export const FEED_LOADED = "FEED_LOADED"
 export const FEED_ERROR = "FEED_ERROR"
+export const POST_SUCCESS = "POST_SUCCESS"
+export const POST_FAIL = "POST_FAIL"
+
 
 
 

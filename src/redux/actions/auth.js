@@ -7,8 +7,28 @@ import{
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_FAIL,
-    REGISTER_SUCCESS
+    REGISTER_SUCCESS,
 } from './actionTypes'
+
+
+// LOAD TOKEN FUNCTION
+export const tokenConfig = (getState) => {
+    
+    const token = getState().token;
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+  
+    
+    if (token) {
+      config.headers['Authorization'] = `Token ${token}`;
+    }
+  
+    return config;
+  };
 
 
 // lOAD USER
@@ -30,6 +50,7 @@ export const loadUser = () => (dispatch, getState) =>{
     })
 }
 
+
 // LOGIN
 export const login = (username, password) => (dispatch) =>{
     
@@ -48,15 +69,17 @@ export const login = (username, password) => (dispatch) =>{
             type: LOGIN_SUCCESS,
             payload: res.data
     });
-    dispatch(loadUser())
     }).catch(err=>{
+        console.log(err)
         console.log(err.data)
+        // console.log(err.response.data)
         dispatch({
             type: LOGIN_FAIL,
 
         })
     })
 }
+
 
 // REGISTER
 export const register = (username,email, password1, password2) => (dispatch) =>{
@@ -75,7 +98,7 @@ export const register = (username,email, password1, password2) => (dispatch) =>{
     }, config)
     .then(res =>{
         dispatch({
-            type: LOGIN_SUCCESS,
+            type: REGISTER_SUCCESS,
             payload: res.data
     });
     dispatch(loadUser())
@@ -97,6 +120,7 @@ export const register = (username,email, password1, password2) => (dispatch) =>{
     })
 }
 
+
 // LOGOUT
 export const logout = () => (dispatch, getState) =>{
     console.log('called logout')
@@ -111,23 +135,3 @@ export const logout = () => (dispatch, getState) =>{
       console.log(err.response.data);
     });
 }
-
-
-// LOAD TOKEN FUNCTION
-export const tokenConfig = (getState) => {
-    
-    const token = getState().token;
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-  
-    
-    if (token) {
-      config.headers['Authorization'] = `Token ${token}`;
-    }
-  
-    return config;
-  };

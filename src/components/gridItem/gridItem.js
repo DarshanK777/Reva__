@@ -42,7 +42,7 @@ class GridItem extends Component{
                                 <img src="/images/icons/circle.svg" alt="usasd" />                            
                             </span>
                             <span className="grid-username">
-                                {data.username}
+                                {data.user.username}
                             </span>
                        </div>
                     </div>

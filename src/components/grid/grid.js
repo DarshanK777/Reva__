@@ -11,10 +11,14 @@ class Grid extends Component{
     }
 
     render(){
+
+        const {feed} = this.props
+        console.log(feed)
+        
         return(
             <div className="grid-container">
                        {
-                           this.state.list.map((value, index) => {
+                           feed.map((value, index) => {
                                return(
                                 <GridItem data={value} key={index} />   
                                )

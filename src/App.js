@@ -32,7 +32,8 @@ class App extends React.Component {
 
 const mapStateToProps = state =>{
   return{
-    user: state.user
+    user: state.user,
+    state: state
   }
 }
 
@@ -42,4 +43,4 @@ const mapDispatchToProps = dispatch =>{
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps )(App);
+export default connect( mapStateToProps, mapDispatchToProps )(App);

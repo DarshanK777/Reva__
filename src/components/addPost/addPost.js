@@ -56,7 +56,6 @@ class AddPost extends React.Component{
                  const currentFile = files[0]
                  const myFileItemReader = new FileReader()
                  myFileItemReader.addEventListener("load", ()=>{
-                     // console.log(myFileItemReader.result)
                      const myResult = myFileItemReader.result
                      this.setState({
                          imgSrc: myResult,
@@ -73,11 +72,9 @@ class AddPost extends React.Component{
     }
     
     onCropComplete = (croppedArea, croppedAreaPixels) => {
-        console.log(croppedArea, 'cropped area pixels', croppedAreaPixels)
         this.setState({
             croppedAreaPixels,
         })
-        console.log('canvasRef',this.canvasRef.current)
     }
 
     onZoomChange = zoom => {
@@ -99,7 +96,7 @@ class AddPost extends React.Component{
             {
                 this.state.imgSrc !== null ? 
                     this.state.finalCrop === true ?
-                        <CompletePost imgSrc={imgSrc} extension={extension} croppedAreaPixels={croppedAreaPixels} />
+                        <CompletePost history={this.props.history} imgSrc={imgSrc} extension={extension} croppedAreaPixels={croppedAreaPixels} />
                         :
                         <div className="crop-container">
                             <Cropper

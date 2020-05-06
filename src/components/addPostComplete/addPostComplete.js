@@ -1,48 +1,53 @@
 import React,{useRef, useEffect} from 'react'
 import './addPostComplete.css'
 import { useDispatch } from 'react-redux'
-import {image64toCanvasRef} from '../../utils/imageUtils'
-import {base64StringtoFile} from '../../utils/imageUtils'
+import { image64toCanvasRef, base64StringtoFile } from '../../utils/imageUtils'
+import { postImage } from '../../redux/actions/feed'
 
-const CompletePost = (props) =>{
+const CompletePost = (props, history) =>{
 
     const refCanvas = useRef(null)
+    const refCaption = useRef(null)
     const dispatch = useDispatch()
 
     useEffect(()=>{
         const canvasRef = refCanvas.current
-        // console.log(canvasRef)
         const {imgSrc, croppedAreaPixels}  = props
         image64toCanvasRef(canvasRef, imgSrc, croppedAreaPixels)
     })
 
-    const handlePost = (event) =>{
+    const handlePost = async (event) =>{
         event.preventDefault()
-        const canvas = this.refCanvas.current
-        const {extension} = this.props
+        const canvasRef = refCanvas.current
+        const {extension} = props
         const filename = "previewFile." + extension
-        const croppedImgSrc = canvas.toDataUrl('image/' + filename)
+        const croppedImgSrc = canvasRef.toDataURL('image/' + filename)
 
-        // original file
+        // cropped file
         const newCroppedFile = base64StringtoFile(croppedImgSrc, filename)
-        //dispatch() // dispatch the upload reducer here
+        const caption = refCaption.current.value
+
+        // uploading the post
+        const post = await dispatch(postImage(newCroppedFile, caption))
+        
+        if(post === 'Success'){
+            return props.history.push('/homeFeed')
+        } else {
+            // show error
+        }
     }   
 
     return(
         <div className="completepost-flexbox">
-            {
-                console.log(props.extension)
-            }
             <div className="completepost-container">
-               <div className="completepost-img-container">
-                 <canvas ref={refCanvas} className="completepost-img" ></ canvas>
-               </div>
-
+                <div className="completepost-img-container">
+                    <canvas ref={refCanvas} className="completepost-img" ></ canvas>
+                </div>
                 <div className="completepost-content">
                         <div className="completepost-caption-title">
                             Caption
                         </div>
-                        <textarea maxLength="150" row="2" placeholder="Caption here" className="completepost-caption" />
+                        <textarea ref={refCaption} maxLength="150" row="2" placeholder="Caption here" className="completepost-caption" />
                     
                     <div className="completepost-btn-container">
                         <button className="completepost-submit-btn" onClick={handlePost}>

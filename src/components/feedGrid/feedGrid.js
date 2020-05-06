@@ -1,11 +1,13 @@
 import React from 'react'
 import './feedGrid.css'
 import Grid from '../grid/grid'
+import {list} from '../../data/temporaryData'
+
 
 const FeedGrid = (props) =>{
     return(
         <div className='feedGrid-container'>
-            <Grid/>
+            <Grid feed={list}/>
         </div>
     )
 }

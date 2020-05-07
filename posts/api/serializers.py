@@ -14,7 +14,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('pk', 'user', 'post_comment_count', 'caption', 'likes', 'image')
+        fields = ('pk', 'user', 'post_comment_count', 'posted_at', 'caption', 'likes', 'image')
+        read_only_fields = ('posted_at',) 
      
     # overiding update method
     def update(self, instance, validated_data):
@@ -42,3 +43,7 @@ class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
         fields = ('from_user', 'post')
+
+
+# class FeedSerializer(serializers.Serializer):
+#     post = PostSerializer(read_only=True)

@@ -7,10 +7,14 @@ from rest_framework import status, permissions
 from accounts.api.serializers import UserSerializer
 from rest_framework.response import Response
 from posts.models import Post, Comments
+from accounts.models import Friends
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, RetrieveAPIView 
 from django.contrib.auth import get_user_model
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
+from django.db.models import Q
+import itertools
+from datetime import datetime
 
 User = get_user_model()
 
@@ -39,8 +43,8 @@ class PostListCreateView(ListCreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
 
     # filtering queryset as per the user
-    def get_queryset(self):
-        user = self.request.user
+    def get_queryset(self, **kwargs):
+        user = self.kwargs.get('pk')
         return Post.objects.filter(user=user)
 
     # setting user during create function
@@ -55,3 +59,21 @@ class PostListCreateView(ListCreateAPIView):
             'message': 'Success',
             'data': response.data
         })
+
+
+
+class MainFeed(APIView):
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        friends = Friends.objects.filter(Q(user1=user) | Q(user2=user)).only("pk")
+        friends_one = Friends.objects.filter(user1=user)
+        friends_two = Friends.objects.filter(user2=user)
+        friends_list_one = list(friends_one.values_list('user2_id', flat=True))
+        friends_list_two = list(friends_two.values_list('user1_id', flat=True))
+        friends_list_id = friends_list_one + friends_list_two + [request.user.id]
+        friends = friends_one.union(friends_two)
+        posts = Post.objects.filter(user__in=friends_list_id)
+        sorted_posts = sorted(posts, key=lambda y: y.posted_at, reverse=True)
+        serialize = PostSerializer(sorted_posts, many=True, context={"request": request})
+        return Response(serialize.data)

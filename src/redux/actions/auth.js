@@ -8,7 +8,10 @@ import{
     LOGOUT_SUCCESS,
     REGISTER_FAIL,
     REGISTER_SUCCESS,
+    STALK_USER,
+    STALK_LOADING
 } from './actionTypes'
+import {PORT_NO} from '../../utils/sense'
 
 
 // LOAD TOKEN FUNCTION
@@ -35,7 +38,7 @@ export const tokenConfig = (getState) => {
 export const loadUser = () => (dispatch, getState) =>{
     dispatch({ type: USER_LOADING});
 
-    axios.get('http://127.0.0.1:8000/api/user/', tokenConfig(getState))
+    axios.get(`${PORT_NO}/api/user/`, tokenConfig(getState))
     .then(res =>{
         dispatch({
             type: USER_LOADED,
@@ -60,7 +63,7 @@ export const login = (username, password) => (dispatch) =>{
         }
     }
 
-    axios.post('http://127.0.0.1:8000/rest-auth/login/', {
+    axios.post(`${PORT_NO}/rest-auth/login/`, {
         username,
         password,
     }, config)
@@ -90,7 +93,7 @@ export const register = (username,email, password1, password2) => (dispatch) =>{
         }
     }
 
-    axios.post('http://127.0.0.1:8000/rest-auth/registration/', {
+    axios.post(`${PORT_NO}/rest-auth/registration/`, {
         username,
         email,
         password1,
@@ -125,7 +128,7 @@ export const register = (username,email, password1, password2) => (dispatch) =>{
 export const logout = () => (dispatch, getState) =>{
     console.log('called logout')
     axios
-    .post('http://127.0.0.1:8000/rest-auth/logout/', null, tokenConfig(getState))
+    .post(`${PORT_NO}/rest-auth/logout/`, null, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: LOGOUT_SUCCESS,
@@ -135,3 +138,19 @@ export const logout = () => (dispatch, getState) =>{
       console.log(err.response.data);
     });
 }
+
+
+export const loadUserOnPk = (pk) => (dispatch, getState) =>{
+    dispatch({type: STALK_LOADING })
+
+    axios.get(`${PORT_NO}/api/user/${pk}`, tokenConfig(getState))
+    .then((res)=>{
+        dispatch({
+            type: STALK_USER,
+            payload: res.data
+        })
+    })
+    .catch((err)=>{
+        console.log(err.response.data)
+    })
+} 

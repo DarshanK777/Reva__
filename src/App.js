@@ -19,9 +19,7 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App" >
-          {
-            console.log('app props: ', this.props)
-          }
+        
           <Body {...this.props}/>
           
         </div>

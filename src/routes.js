@@ -14,7 +14,7 @@ const BaseRouter = () =>(
     <Switch>
         <Route exact path='/' component = {Home} />
         <PrivateRoute exact path='/homeFeed' component = {FeedGrid} />
-        <PrivateRoute exact path='/profile/:id' component={UserProfile}/>
+        <PrivateRoute exact path='/profile/:id?' component={UserProfile}/>
         <PrivateRoute exact path='/addPost/' component ={AddPost} />
         <Route exact path='/login/' component ={Login} />
         <Route exact path='/register/' component ={Register} />

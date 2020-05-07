@@ -25,20 +25,28 @@
 #6th may:
     - subscribe and unsubscribe user (backend logic to de done) (done)
     - create api to get user profile by there pk (done)
-    
-    
+        
 #7th may
-    - algorithm for sorting main feed
-    - user redirect for post from main feed (or details page)
-    - frontend for subscribing and unsubscribing 
-    
+    - algorithm for sorting main feed (done)
+    - user redirect for post from main feed (details page)
+    - connected main feed api and alg with frontend
 
-#8th may
+#8th may:
+    - profile redirect from profile page got a problem(least important)
+    - frontend for subscribing and unsubscribing 
+    - add friends column in user to find if current profile is friend of user
+    - complete settings page (rest-auth && custom api)
+
+#10th may:
     - develop page for post details
     - alg for search feed
     - pagination 
 
-#15th may:
+#16th may:
+    - animations and transitions
+    - loader and ui salts
+
+#17th may:
     - deploy app to server heroku
     - test it online 
     - learn basic testing and test the system

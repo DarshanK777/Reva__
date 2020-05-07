@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import './gridItem.css'
 import {withRouter} from 'react-router-dom'
+import { connect } from 'react-redux'
 
 
 class GridItem extends Component{
@@ -22,9 +23,13 @@ class GridItem extends Component{
     //     })
     // }
 
+    handleUserLoad = (pk) =>{
+        this.props.history.push(`/profile/${pk}`)
+    }
+
     render(){
         const { data} = this.props
-        
+        // console.log(data.image)
         // onClick={() => history.push({pathname:`/det/${data.id}`, data: data})}
         return(
             <Fragment>
@@ -41,7 +46,7 @@ class GridItem extends Component{
                             <span className="avatar">
                                 <img src="/images/icons/circle.svg" alt="usasd" />                            
                             </span>
-                            <span className="grid-username">
+                            <span className="grid-username" onClick={() => this.handleUserLoad(data.user.pk)}>
                                 {data.user.username}
                             </span>
                        </div>
@@ -53,4 +58,16 @@ class GridItem extends Component{
     }
 }
 
-export default withRouter(GridItem)
+const mapStateToProps = state =>{
+    return{
+
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return{
+
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GridItem))

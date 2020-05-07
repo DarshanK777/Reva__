@@ -1,10 +1,9 @@
 import axios from 'axios'
 import { FEED_LOADED, FEED_LOADING, FEED_ERROR, POST_FAIL,
-  POST_SUCCESS } from './actionTypes'
-import { Redirect } from 'react-router-dom';
-import { loadUser } from './auth'
+  POST_SUCCESS, MAINFEED_LOADING, MAINFEED_LOADED, MAINFEED_ERROR } from './actionTypes'
+import {PORT_NO} from '../../utils/sense'
 
-// LOAD TOKEN FUNCTION
+  // LOAD TOKEN FUNCTION
 export const tokenConfig = (getState) => {
     
   const token = getState().token;
@@ -25,14 +24,14 @@ export const tokenConfig = (getState) => {
 
 
 // FEED LOAD INCOMPLETE
-export const feedload = () => (dispatch, getState) =>{
+export const feedload = (pk) => (dispatch, getState) =>{
     dispatch({type: FEED_LOADING})
 
-    axios.get('http://127.0.0.1:8000/api/posts/listCreate/', tokenConfig(getState))
+    axios.get(`${PORT_NO}/api/posts/listCreate/${pk}`, tokenConfig(getState))
     .then(res =>{
         dispatch({
             type: FEED_LOADED,
-            payload: res.data
+            payload: (res.data).reverse()
     });
     }).catch(err=>{
         console.log(err)
@@ -42,7 +41,26 @@ export const feedload = () => (dispatch, getState) =>{
         })
     })
 }
-  
+
+
+// LOAD MAIN FEED  
+export const loadMainFeed = () => (dispatch, getState) =>{
+    dispatch({type: MAINFEED_LOADING})
+
+    axios.get(`${PORT_NO}/api/posts/mainFeed/`, tokenConfig(getState))
+    .then(res =>{
+        dispatch({
+            type: MAINFEED_LOADED,
+            payload: res.data
+    });
+    }).catch(err=>{
+        console.log(err)
+        dispatch({
+            type: MAINFEED_ERROR,
+
+        })
+    })
+}
 
 // UPLOAD IMAGE
 export const postImage = (image, caption) => async (dispatch, getState) =>{
@@ -54,8 +72,9 @@ export const postImage = (image, caption) => async (dispatch, getState) =>{
   formData.append('caption', caption)
 
   try{
-    const post = await axios.post('http://127.0.0.1:8000/api/posts/listCreate/', formData, tokenConfig(getState))
+    const post = await axios.post(`${PORT_NO}/api/posts/listCreate/`, formData, tokenConfig(getState))
     dispatch({type:POST_SUCCESS})
+    dispatch(feedload())
     return post.data.message
 
   }catch(err){

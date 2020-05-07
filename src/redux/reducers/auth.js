@@ -1,5 +1,6 @@
-import {USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, POST_SUCCESS, POST_FAIL, FEED_LOADING, FEED_LOADED} from '../actions/actionTypes'
-import { loadUser } from '../actions/auth';
+import {USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, FEED_LOADING, FEED_LOADED,
+        MAINFEED_LOADED, MAINFEED_LOADING, STALK_USER, STALK_LOADING
+} from '../actions/actionTypes'
 
 const intialState = {
     token : localStorage.getItem("token"),
@@ -7,19 +8,18 @@ const intialState = {
     isLoading: false,
     user: null,
     errors: null,
-    feedloaded: null
-    //make a different reducer
-    // postUploaded: null
+    feedloaded: null,
+    mainFeed: null,
+    stalkUser: null
 };
 
 export default function(state=intialState, action){
     switch(action.type){
         case USER_LOADING:
-        
             return{
                 ...state,
                 isLoading: true,
-                // postUploaded: null
+                
             }
 
         case USER_LOADED:
@@ -27,7 +27,7 @@ export default function(state=intialState, action){
                 ...state,
                 isLoading: false,
                 isAuthenticated: true,
-                user: action.payload
+                user: action.payload,
             }
 
         case LOGIN_SUCCESS:
@@ -64,10 +64,27 @@ export default function(state=intialState, action){
             }
         
         case FEED_LOADING:
+        case MAINFEED_LOADING:
+        case STALK_LOADING:
             return{
                 ...state,
             }
         
+        case MAINFEED_LOADED:
+            return{
+                ...state,
+                mainFeed: true,
+                mainFeedData: action.payload
+            }
+        
+
+        case STALK_USER:
+            return{
+                ...state,
+                stalkUser:true,
+                userData: action.payload,
+                
+            }
         default:
             return state
     }

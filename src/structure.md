@@ -29,12 +29,12 @@
 #7th may
     - algorithm for sorting main feed (done)
     - user redirect for post from main feed (details page)
-    - connected main feed api and alg with frontend
+    - connected main feed api and alg with frontend (done)
 
 #8th may:
     - profile redirect from profile page got a problem(least important)
     - frontend for subscribing and unsubscribing 
-    - add friends column in user to find if current profile is friend of user
+    - add friends column in user to find if current profile is friend of user(done and api too ) 
     - complete settings page (rest-auth && custom api)
 
 #10th may:

@@ -32,7 +32,7 @@
     - connected main feed api and alg with frontend (done)
 
 #8th may:
-    - profile redirect from profile page got a problem(least important)
+    - profile redirect from profile page got a problem(least important) -------------------------------------------------------------------<>
     - frontend for subscribing and unsubscribing 
     - add friends column in user to find if current profile is friend of user(done and api too ) 
     - complete settings page (rest-auth && custom api)

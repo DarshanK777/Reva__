@@ -3,8 +3,8 @@ import './userProfile.css'
 import Grid from '../grid/grid'
 import {feedload} from '../../redux/actions/feed'
 import {useSelector, useDispatch, shallowEqual} from 'react-redux'
-import { logout, loadUserOnPk } from '../../redux/actions/auth'
-
+import { logout, loadUserOnUsername } from '../../redux/actions/auth'
+import { sendFollowRequest} from '../../redux/actions/updateAccount'
 
 
 
@@ -15,12 +15,11 @@ const UserProfile = (props) =>{
     const feed = useSelector(state => state.userPosts)
     const dispatch = useDispatch()
     const feedloaded = useSelector(state => state.feedloaded)
-    const userId = props.match.params.id ? props.match.params.id : user.pk
-   
-    
+    const userId = props.match.params.username ? props.match.params.username : user.username
+
     useEffect(()=>{
         console.log(user)
-        dispatch(loadUserOnPk(userId))
+        dispatch(loadUserOnUsername(userId))
         dispatch(feedload(userId))
          
     },[])
@@ -34,7 +33,7 @@ const UserProfile = (props) =>{
                 <div className="profile-container">
                     <div className="profileSidebar">
                         {
-                        console.log(userData)
+                        console.log(userData, user)
                     }
                         <div className="profileImage">
                             <img src='/images/03.jpg' alt="asd" />
@@ -51,13 +50,13 @@ const UserProfile = (props) =>{
                             <div className="botContent">
                                 <div className="insights">
                                     <span>
-                                        <b>3</b> followers
+                                        <b> {(userData.followers).length}</b> followers
                                     </span>
                                     <span>
-                                        <b>3</b> posts
+                                     <b>{feedloaded? feed.length: 0}</b> posts
                                     </span>
                                     <span>  
-                                    <b>3</b> following
+                                    <b>{(userData.following).length}</b> following
                                     </span>
                                 </div>
                                 <div className="fullName">
@@ -94,13 +93,19 @@ const UserProfile = (props) =>{
                                 </div>
                                 <div className="subInfoCounts">
                                     <span >
-                                        52
+                                    {(userData.followers).length}
                                     </span>
                                     <span >
-                                        2
+                                    {
+                                        feedloaded?
+                                         feed.length:
+                                         0
+                                    }
                                     </span>
                                     <span >
-                                        5
+                                        {
+                                        (userData.following).length
+                                        }
                                     </span>
                                 </div>
                             </div>
@@ -111,10 +116,16 @@ const UserProfile = (props) =>{
                         <div className="misc">
                             <div className="followBtn">
                                 {
-                                    userId === user.pk ? null :
-                                    <button>
-                                        Follow
-                                    </button>
+                                    userId === user.username ? null :
+                                    user.following.some(function(o){return o["following_user_id"] === userData.pk;}) ?
+                                    <button className='disabled'>
+                                        Following
+                                    </button >:
+                                                <button onClick={
+                                                    ()=>dispatch(sendFollowRequest(userData.pk))
+                                                }>
+                                                    Follow
+                                                </button>
                                 }
                             </div>
                             <div className="logout">

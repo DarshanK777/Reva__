@@ -140,10 +140,10 @@ export const logout = () => (dispatch, getState) =>{
 }
 
 
-export const loadUserOnPk = (pk) => (dispatch, getState) =>{
+export const loadUserOnUsername = (username) => (dispatch, getState) =>{
     dispatch({type: STALK_LOADING })
 
-    axios.get(`${PORT_NO}/api/user/${pk}`, tokenConfig(getState))
+    axios.get(`${PORT_NO}/api/user/${username}`, tokenConfig(getState))
     .then((res)=>{
         dispatch({
             type: STALK_USER,

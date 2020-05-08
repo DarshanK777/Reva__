@@ -160,7 +160,16 @@
     display: none;
 }
 
+.disabled{
+    background-color: rgb(207, 207, 207) !important; 
+    color: honeydew;
+}
 
+.disabled:hover{
+    -webkit-box-shadow: 0px 0px 28px 0px rgba(0,0,0,0.7) !important;
+    -moz-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.7) !important;
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.7) !important;
+}
 
 @media (max-width: 1024px){
     .profile-container{

@@ -23,8 +23,8 @@ class GridItem extends Component{
     //     })
     // }
 
-    handleUserLoad = (pk) =>{
-        this.props.history.push(`/profile/${pk}`)
+    handleUserLoad = (username) =>{
+        this.props.history.push(`/profile/${username}`)
     }
 
     render(){
@@ -46,7 +46,7 @@ class GridItem extends Component{
                             <span className="avatar">
                                 <img src="/images/icons/circle.svg" alt="usasd" />                            
                             </span>
-                            <span className="grid-username" onClick={() => this.handleUserLoad(data.user.pk)}>
+                            <span className="grid-username" onClick={() => this.handleUserLoad(data.user.username)}>
                                 {data.user.username}
                             </span>
                        </div>

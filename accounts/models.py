@@ -12,6 +12,8 @@ class Profile(models.Model):
     last_login = models.DateTimeField(blank=True, null=True)
     avatar_url = models.CharField(max_length=150)
     bio = models.TextField(default="")
+    # followers = models.ManyToManyField(User, blank=True, through='Friends', related_name='followers ',
+    #  symmetrical=False)
 
     def __str__(self):
         return self.user.username
@@ -28,16 +30,20 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+
 # FRIENDS MODEL
 class Friends(models.Model):
-    user1 = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)
-    user2 = models.ForeignKey(User, related_name="to_user", on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
+    following_user_id = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE)
     accepted = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user1", "user2")
+        unique_together = ("user_id", "following_user_id")
+        ordering = ["-timestamp"]
 
 
     def __str__(self):
-        return " {} to {}".format(self.user1, self.user2)
+        return " {} following {}".format(self.user_id, self.following_user_id)
+
+    

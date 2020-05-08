@@ -11,10 +11,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     avatar_url = serializers.CharField(source='profile.avatar_url', allow_blank=True)
     bio = serializers.CharField(source='profile.bio', allow_blank=True)
+    following = serializers.SerializerMethodField()
+    followers = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('pk', 'username', 'first_name', 'last_name', 'email', 'avatar_url', 'bio')
+        fields = ('pk', 'username', 'first_name', 'last_name', 'email', 'avatar_url', 'bio', "following",
+                "followers",)
         # defining basic validations
         extra_kwargs = {'email': {'required': True, 'allow_blank': False}, 
                         'username': {'validators': [UnicodeUsernameValidator()], 
@@ -39,6 +42,12 @@ class UserSerializer(serializers.ModelSerializer):
     def update_or_create_profile(self, user, profile_data):
         Profile.objects.update_or_create(user=user, defaults=profile_data)
 
+    def get_following(self, obj):
+        return FollowingSerializer(obj.following.all(), many=True).data
+
+    def get_followers(self, obj):
+        return FollowersSerializer(obj.followers.all(), many=True).data
+
 class TokenSerializer(serializers.ModelSerializer):
 
     user = UserSerializer(many=False, read_only=True)  # this is add by myself.
@@ -46,17 +55,13 @@ class TokenSerializer(serializers.ModelSerializer):
         model = TokenModel
         fields = ('key', 'user')  
 
-class FriendsSerializer(serializers.ModelSerializer):
-
-    user1 = UserSerializer(read_only=True)
-    user2 = UserSerializer(read_only=True)
-
+class FollowingSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Friends
-        fields = ('user1', 'user2', 'accepted')
+        fields = ("id", "following_user_id", 'accepted', "timestamp")
 
-    # def create(self, validated_data, *args, **kwargs):
-    #     print(validated_data)
-    #     username = validated_data.pop('username')
-    #     user = User.objects.filter(username=username)
-    #     print(user)
+class FollowersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Friends
+        fields = ("id", "user_id", 'accepted', "timestamp")

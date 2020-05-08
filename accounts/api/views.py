@@ -2,7 +2,7 @@ from rest_framework.generics import RetrieveUpdateAPIView, ListCreateAPIView, Re
 from rest_framework import permissions
 from rest_framework.views import APIView 
 from django.contrib.auth import get_user_model
-from accounts.api.serializers import UserSerializer, FriendsSerializer
+from accounts.api.serializers import UserSerializer, FollowingSerializer
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from accounts.models import Friends
@@ -32,7 +32,7 @@ class GetOneUser(RetrieveAPIView):
 # FRIEND SYSTEM 
 class FriendsView(ListCreateAPIView):
 
-    serializer_class = FriendsSerializer
+    serializer_class = FollowingSerializer
     queryset = Friends.objects.all()
 
     def post(self, request, *args, **kwargs):
@@ -45,8 +45,8 @@ class FriendsView(ListCreateAPIView):
                 accepted = False
 
             Friends.objects.create(
-                user1=request.user,
-                user2=user2,
+                user_id=request.user,
+                following_user_id=user2,
                 accepted=accepted
             )
             return Response({'status': 'Request sent'}, status=201)

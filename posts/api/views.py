@@ -64,15 +64,12 @@ class PostListCreateView(ListCreateAPIView):
 
 class MainFeed(APIView):
 
+    # Getting followers posts
     def get(self, request, *args, **kwargs):
         user = request.user
-        friends = Friends.objects.filter(Q(user1=user) | Q(user2=user)).only("pk")
-        friends_one = Friends.objects.filter(user1=user)
-        friends_two = Friends.objects.filter(user2=user)
-        friends_list_one = list(friends_one.values_list('user2_id', flat=True))
-        friends_list_two = list(friends_two.values_list('user1_id', flat=True))
-        friends_list_id = friends_list_one + friends_list_two + [request.user.id]
-        friends = friends_one.union(friends_two)
+        friends_queryset = Friends.objects.filter(user_id=user).filter(accepted=True)
+        friends_list_one = list(friends_queryset.values_list('following_user_id', flat=True))
+        friends_list_id = friends_list_one + [request.user.id]
         posts = Post.objects.filter(user__in=friends_list_id)
         sorted_posts = sorted(posts, key=lambda y: y.posted_at, reverse=True)
         serialize = PostSerializer(sorted_posts, many=True, context={"request": request})

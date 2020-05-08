@@ -9,7 +9,9 @@ urlpatterns = [
     path('rest-auth/logout/', include('rest_auth.urls')),
     path('api/', include('accounts.api.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
-    path('api-auth/', include('rest_framework.urls'))
+    path('/rest-auth/password/change/', include('rest_auth.registration.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+    
 
 ]
 

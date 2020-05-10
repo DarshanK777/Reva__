@@ -1,6 +1,6 @@
 import React,{useRef, useEffect} from 'react'
 import './addPostComplete.css'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { image64toCanvasRef, base64StringtoFile } from '../../utils/imageUtils'
 import { postImage } from '../../redux/actions/feed'
 
@@ -9,6 +9,7 @@ const CompletePost = (props, history) =>{
     const refCanvas = useRef(null)
     const refCaption = useRef(null)
     const dispatch = useDispatch()
+    const user = useSelector(state => state.user)
 
     useEffect(()=>{
         const canvasRef = refCanvas.current
@@ -28,7 +29,7 @@ const CompletePost = (props, history) =>{
         const caption = refCaption.current.value
 
         // uploading the post
-        const post = await dispatch(postImage(newCroppedFile, caption))
+        const post = await dispatch(postImage(newCroppedFile, caption, user.username))
         
         if(post === 'Success'){
             return props.history.push('/homeFeed')
@@ -44,6 +45,9 @@ const CompletePost = (props, history) =>{
                     <canvas ref={refCanvas} className="completepost-img" ></ canvas>
                 </div>
                 <div className="completepost-content">
+                    {
+                        console.log(user)
+                    }
                         <div className="completepost-caption-title">
                             Caption
                         </div>

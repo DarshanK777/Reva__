@@ -2,8 +2,8 @@ import React,{useEffect} from 'react'
 import './feedGrid.css'
 import Grid from '../grid/grid'
 import {  useDispatch, useSelector } from 'react-redux'
-import { loadMainFeed } from '../../redux/actions/feed'
-
+import { loadMainFeed, loadNextMainFeed } from '../../redux/actions/feed'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 
@@ -12,22 +12,44 @@ const FeedGrid = (props) =>{
     const mainFeed = useSelector(state => state.mainFeed)
     const dispatch = useDispatch()
     const mainFeedData = useSelector(state => state.mainFeedData)
+    const mainNext = useSelector(state => state.mainNext)
+    const mainPrevious = useSelector(state => state.mainPrevious)
+    const mainCount = useSelector(state => state.mainCount)
 
     useEffect(()=>{
-        console.log('trials')
-
+        // console.log('trials')
         dispatch(loadMainFeed())
-         
-        console.log(mainFeedData)
+        // console.log(mainFeedData)
     }, [])
 
+    
+    const handleNext = (next) =>{
+        if(next !== false){
+            dispatch(loadNextMainFeed(next))
+        }    
+    }
 
     return(
         <div className='feedGrid-container'>
              {
                     mainFeed ? 
-                    <Grid feed={mainFeedData}/>:
-                    <h1> Loading </h1>
+                    <InfiniteScroll
+                        dataLength={mainCount}
+                        next = {handleNext(mainNext)}
+                        hasMore={mainNext}
+                        loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+                        endMessage={
+                            <p style={{ textAlign: "center", bottom: 0 }}>
+                                
+                            </p>
+                            }
+                                >
+
+                                    <Grid feed={mainFeedData}/>
+                                
+                                </InfiniteScroll>
+                                :
+                                <h1>loading</h1>
                 }
         </div>
     )

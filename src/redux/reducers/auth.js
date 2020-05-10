@@ -9,8 +9,10 @@ const intialState = {
     user: null,
     errors: null,
     feedloaded: null,
-    mainFeed: null,
-    stalkUser: null
+    mainFeed: '',
+    stalkUser: null,
+    userPosts: '',
+    mainFeedData: ''
 };
 
 export default function(state=intialState, action){
@@ -60,7 +62,13 @@ export default function(state=intialState, action){
             return{
                 ...state,
                 feedloaded: true,
-                userPosts: action.payload
+                userPosts: [
+                    ...state.userPosts,
+                    ...action.payload.results
+                ],
+                count: action.payload.count,
+                next: action.payload.next !== null ? action.payload.next : false,
+                previous: action.payload.previous ? action.payload.previous : false
             }
         
         case FEED_LOADING:
@@ -74,7 +82,13 @@ export default function(state=intialState, action){
             return{
                 ...state,
                 mainFeed: true,
-                mainFeedData: action.payload
+                mainFeedData:[
+                    ...state.mainFeedData,
+                    ...action.payload.results
+                ],
+                mainCount: action.payload.count,
+                mainNext: action.payload.next !== null ? action.payload.next : false,
+                mainPrevious: action.payload.previous ? action.payload.previous : false
             }
         
 

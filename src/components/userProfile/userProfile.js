@@ -1,10 +1,11 @@
 import React,{useEffect, Fragment} from 'react'
 import './userProfile.css'
 import Grid from '../grid/grid'
-import {feedload} from '../../redux/actions/feed'
+import {feedload, loadNextFeed} from '../../redux/actions/feed'
 import {useSelector, useDispatch, shallowEqual} from 'react-redux'
 import { logout, loadUserOnUsername } from '../../redux/actions/auth'
 import { sendFollowRequest} from '../../redux/actions/updateAccount'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 
@@ -13,6 +14,10 @@ const UserProfile = (props) =>{
 
     const {user , userData, stalkUser} = useSelector(state => state , shallowEqual)
     const feed = useSelector(state => state.userPosts)
+    const next = useSelector(state => state.next)
+    const previous = useSelector(state => state.previous)
+    const count = useSelector(state => state.count)
+
     const dispatch = useDispatch()
     const feedloaded = useSelector(state => state.feedloaded)
     const userId = props.match.params.username ? props.match.params.username : user.username
@@ -24,6 +29,12 @@ const UserProfile = (props) =>{
          
     },[])
 
+
+    const handleNext = (next) =>{
+        if(next !== false){
+            dispatch(loadNextFeed(next))
+        }    
+    }
     
 
     return(
@@ -33,7 +44,7 @@ const UserProfile = (props) =>{
                 <div className="profile-container">
                     <div className="profileSidebar">
                         {
-                        console.log(userData, user)
+                        console.log(feed)
                     }
                         <div className="profileImage">
                             <img src='/images/03.jpg' alt="asd" />
@@ -140,8 +151,23 @@ const UserProfile = (props) =>{
                     <div className="profilePosts">
                         {
                             feedloaded ?
-                            <Grid feed={feed}/>:
-                            <h1>loading</h1>
+                                <InfiniteScroll
+                                    dataLength={count}
+                                    next = {handleNext(next)}
+                                    hasMore={next}
+                                    loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+                                    endMessage={
+                                        <p style={{ textAlign: "center" }}>
+                                          <b>End of Posts</b>
+                                        </p>
+                                      }
+                                >
+
+                                    <Grid feed={feed}/>
+                                
+                                </InfiniteScroll>
+                                :
+                                <h1>loading</h1>
                         }
                     </div>
                 </div>:

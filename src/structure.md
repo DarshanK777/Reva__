@@ -37,10 +37,28 @@
     - add friends column in user to find if current profile is friend of user(done and api too ) 
     - complete settings page (rest-auth && custom api)
 
-#10th may:
+#9th may:
+    - fix main feed frontend as per data from api (done)
+    - pagination  (done)
+
+#10th may: 
     - develop page for post details
-    - alg for search feed
-    - pagination 
+    - alg for search feed api
+    - infinite scroll state update error (STATE UPDATION ERROR , DO AT NIGHT)
+
+#11th may:
+    - login page error notice
+    - connect detail page with api (reducers and all)
+    - change header icon placement
+
+#12th may:
+    - search feed to frontend
+    - canvas size bug
+
+#13th may:
+    - image lazy loading
+    - make seperate reducers
+    - optimize the algorithms more
 
 #16th may:
     - animations and transitions

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { FEED_LOADED, FEED_LOADING, FEED_ERROR, POST_FAIL,
-  POST_SUCCESS, MAINFEED_LOADING, MAINFEED_LOADED, MAINFEED_ERROR } from './actionTypes'
+  POST_SUCCESS, MAINFEED_LOADING, MAINFEED_LOADED, MAINFEED_ERROR, NEXTFEED_LOADING, MAINNEXTFEED_LOADING } from './actionTypes'
 import {PORT_NO} from '../../utils/sense'
 
   // LOAD TOKEN FUNCTION
@@ -26,12 +26,11 @@ export const tokenConfig = (getState) => {
 // FEED LOAD INCOMPLETE
 export const feedload = (pk) => (dispatch, getState) =>{
     dispatch({type: FEED_LOADING})
-
     axios.get(`${PORT_NO}/api/posts/listCreate/${pk}`, tokenConfig(getState))
     .then(res =>{
         dispatch({
             type: FEED_LOADED,
-            payload: (res.data).reverse()
+            payload: res.data
     });
     }).catch(err=>{
         console.log(err)
@@ -40,6 +39,24 @@ export const feedload = (pk) => (dispatch, getState) =>{
 
         })
     })
+}
+
+export const loadNextFeed = (link) => (dispatch, getState) =>{
+  dispatch({type: NEXTFEED_LOADING})
+  
+  axios.get(link, tokenConfig(getState))
+  .then((res)=>{
+      dispatch({
+        type: FEED_LOADED,
+        payload: res.data
+  })
+  }).catch(err=>{
+    console.log(err)
+    dispatch({
+        type: FEED_ERROR,
+
+    })
+  })
 }
 
 
@@ -62,8 +79,28 @@ export const loadMainFeed = () => (dispatch, getState) =>{
     })
 }
 
+
+export const loadNextMainFeed = (link) => (dispatch, getState) =>{
+  dispatch({type: MAINNEXTFEED_LOADING})
+  
+  axios.get(link, tokenConfig(getState))
+  .then((res)=>{
+      dispatch({
+        type: MAINFEED_LOADED,
+        payload: res.data
+  })
+  }).catch(err=>{
+    console.log(err)
+    dispatch({
+        type: MAINFEED_ERROR,
+
+    })
+  })
+}
+
+
 // UPLOAD IMAGE
-export const postImage = (image, caption) => async (dispatch, getState) =>{
+export const postImage = (image, caption, user) => async (dispatch, getState) =>{
 
   console.log('this is executed')
 
@@ -72,9 +109,10 @@ export const postImage = (image, caption) => async (dispatch, getState) =>{
   formData.append('caption', caption)
 
   try{
-    const post = await axios.post(`${PORT_NO}/api/posts/listCreate/`, formData, tokenConfig(getState))
+    const post = await axios.post(`${PORT_NO}/api/posts/createPost/`, formData, tokenConfig(getState))
     dispatch({type:POST_SUCCESS})
-    dispatch(feedload())
+    dispatch(feedload(user))
+    dispatch(loadMainFeed())
     return post.data.message
 
   }catch(err){

@@ -25,9 +25,14 @@ class GetOneUser(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
     
-    def get_queryset(self):
-        pk = self.kwargs['pk']
-        return User.objects.filter(pk=pk)
+    # def get_queryset(self):
+    #     username = self.kwargs['pk']
+    #     print(User.objects.filter(username=username))
+    #     return User.objects.filter(username=username)
+
+    def get_object(self):
+        username = self.kwargs['pk']
+        return User.objects.get(username=username)
 
 # FRIEND SYSTEM 
 class FriendsView(ListCreateAPIView):
@@ -37,7 +42,7 @@ class FriendsView(ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            user2 = User.objects.get(username=request.data['username'])
+            user2 = User.objects.get(pk=request.data['userid'])
             accepted = request.data['accepted']
             if accepted == "true":
                 accepted = True

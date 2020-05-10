@@ -14,6 +14,7 @@ class Post(models.Model):
 
     class Meta:
         default_related_name = 'posts'
+        ordering = ['-posted_at']
 
     def __str__(self):
         return "{} : {}".format(self.user.username, self.posted_at)

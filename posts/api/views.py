@@ -15,6 +15,9 @@ from rest_framework.authtoken.models import Token
 from django.db.models import Q
 import itertools
 from datetime import datetime
+from .pagination import PostLimitOffsetPagination
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import AllowAny
 
 User = get_user_model()
 
@@ -41,11 +44,13 @@ class PostListCreateView(ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PostSerializer
     parser_classes = (MultiPartParser, FormParser)
+    pagination_class = PostLimitOffsetPagination
 
     # filtering queryset as per the user
     def get_queryset(self, **kwargs):
-        user = self.kwargs.get('pk')
-        return Post.objects.filter(user=user)
+        user = self.kwargs.get('username')
+        user_id = User.objects.get(username=user)
+        return Post.objects.filter(user=user_id)
 
     # setting user during create function
     def perform_create(self, serializer):
@@ -63,14 +68,18 @@ class PostListCreateView(ListCreateAPIView):
 
 
 class MainFeed(APIView):
-
     # Getting followers posts
     def get(self, request, *args, **kwargs):
+        paginator = PostLimitOffsetPagination()
+        
         user = request.user
         friends_queryset = Friends.objects.filter(user_id=user).filter(accepted=True)
         friends_list_one = list(friends_queryset.values_list('following_user_id', flat=True))
         friends_list_id = friends_list_one + [request.user.id]
         posts = Post.objects.filter(user__in=friends_list_id)
+        res = paginator.paginate_queryset(posts, request)
+        sorted_res = sorted(res, key=lambda y: y.posted_at, reverse=True)
         sorted_posts = sorted(posts, key=lambda y: y.posted_at, reverse=True)
-        serialize = PostSerializer(sorted_posts, many=True, context={"request": request})
-        return Response(serialize.data)
+        serialize = PostSerializer(sorted_res, many=True, context={"request": request})
+        return paginator.get_paginated_response(serialize.data)
+        

@@ -44,6 +44,6 @@ class Friends(models.Model):
 
 
     def __str__(self):
-        return " {} following {}".format(self.user_id, self.following_user_id)
+        return " {} following {} accepted {}".format(self.user_id, self.following_user_id, self.accepted)
 
     

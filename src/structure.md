@@ -41,26 +41,30 @@
     - fix main feed frontend as per data from api (done)
     - pagination  (done)
 
-#10th may: 
-    - develop page for post details
-    - alg for search feed api
-    - infinite scroll state update error (STATE UPDATION ERROR , DO AT NIGHT)
+#10th may:
+    - alg for search feed api(done)
+    - edited header.js resposive
 
-#11th may:
+#11th may: 
+    - develop page for post details
+    - infinite scroll state update error (STATE UPDATION ERROR , DO AT NIGHT)
+    - see to header doesnt show during login page
+
+#12th may:
     - login page error notice
     - connect detail page with api (reducers and all)
     - change header icon placement
 
-#12th may:
+#13th may:
     - search feed to frontend
     - canvas size bug
 
-#13th may:
+#14th may:
     - image lazy loading
     - make seperate reducers
     - optimize the algorithms more
 
-#16th may:
+#15th may:
     - animations and transitions
     - loader and ui salts
 

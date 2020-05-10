@@ -1,5 +1,5 @@
 .header{
-    height: 85px;
+    height: 8vh;
     display: flex;
     position: fixed;
     z-index: 999;
@@ -10,48 +10,55 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1%;
-    padding-bottom: 0;
+    padding-bottom: 0; 
+    /* background-color: hotpink; */
 }
 
 .addPost-header{
     display: none;
 }
 
-.logo{
-    width:30px;
-    height: 30px;
+
+.left{
+   height: 80%;
+   width: 100%;
 }
 
-.logo:hover{
-    cursor: pointer;
+.left img{
+    height: 100%;
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
 }
-
-.images{
-    width:20px;
-    height: 20px;
-}
-
-.images:hover{
-    cursor: pointer;
-}
-
 
 .mid{
+    height: 80%;
+    width: 100%;
     display: flex;
+    justify-content: center;
+    align-items: center;
+ }
 
+.images{
+    height: 40%;
+    width: auto;
+    margin: 0 3%;
+    cursor: pointer;
 }
 
-.mid img{
-    margin: 0 20px;
-}
+ 
+.right{
+    height: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+ }
 
-.right img{
-    margin: 0 10px;
-}
 
 @media (max-width: 740px) {
     .header{
-        height: 75px;
+        height: 7vh;
         padding: 0 20px;
     }
   }
@@ -61,13 +68,13 @@
     
     .addPost-header{
         display: block;
-        height: 20px;
-        width: 20px;
+        height: 50%;
+        width: auto;
     }
 
 
     .header{
-        height: 60px;
+        height: 7vh;
         padding: 0 10px;
     }
       

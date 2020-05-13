@@ -108,6 +108,9 @@ form button:active{
     box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.7)
 }
 
+.login-input-holder{
+    display: flex;
+}
 
 .link-login{
     text-decoration: none;

@@ -72,14 +72,20 @@ export const login = (username, password) => (dispatch) =>{
             type: LOGIN_SUCCESS,
             payload: res.data
     });
-    }).catch(err=>{
-        console.log(err)
-        console.log(err.data)
-        // console.log(err.response.data)
-        dispatch({
-            type: LOGIN_FAIL,
-
-        })
+    }).catch(error=>{
+        if (error.response) {
+            console.log('01',error.response.data); 
+            dispatch({
+                type: LOGIN_FAIL,
+                payload: error.response.data
+            })
+        } else if (error.request) {
+            dispatch({ type: LOGIN_FAIL, })
+            console.log( '02 ', error.request);
+        } else {
+            dispatch({ type: LOGIN_FAIL, })
+            console.log('Error', error.message);
+        }
     })
 }
 

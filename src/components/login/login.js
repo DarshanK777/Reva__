@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { login } from '../../redux/actions/auth'
+import Tooltip from '../tooltip/tooltip'
 
 class Login extends React.Component{
 
@@ -25,6 +26,8 @@ class Login extends React.Component{
     }
 
     render(){
+   
+        const {errors} = this.props
         // console.log("state",this.props.location)
         if(this.props.isAuthenticated){
             const { location } = this.props
@@ -44,10 +47,16 @@ class Login extends React.Component{
 
                     <div className="login-title">
                         Login
+                        {
+                            console.log(this.props)
+                        }
                     </div>
+                    
 
-                    <form onSubmit={this.handleSubmit}>
-                        <input 
+                    <form onSubmit={this.handleSubmit}> 
+                        
+                       <div className="login-input-holder">
+                       <input 
                             type="text"
                             className="input" 
                             name="username" 
@@ -55,7 +64,16 @@ class Login extends React.Component{
                             onChange={this.handleChange} 
                             placeholder="Username"
                         />
+                         <div className="register-tooltip">
+                            {
+                                errors ?
+                               <Tooltip error={errors.non_field_errors} />: 
+                                null
+                            }
+                            </div> 
+                       </div>
 
+                        <div className="login-input-holder">
                         <input 
                             type="password"  
                             className="input" 
@@ -63,7 +81,14 @@ class Login extends React.Component{
                             name="password" 
                             value={this.state.password} 
                             onChange={this.handleChange}
-                        />  
+                        />  <div className="register-tooltip">
+                        {
+                            errors ?
+                            <Tooltip error={errors.non_field_errors} />: 
+                            null
+                        }
+                        </div> 
+                        </div>
                          
                         <button> Login</button> 
                     </form>
@@ -81,7 +106,8 @@ class Login extends React.Component{
 }
 
 const mapStateToProps = state =>({
-    isAuthenticated : state.isAuthenticated
+    isAuthenticated : state.isAuthenticated,
+    errors : state.errors
 })
 
 export default withRouter(connect(mapStateToProps, {login})(Login))

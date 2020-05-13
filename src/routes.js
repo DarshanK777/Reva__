@@ -9,6 +9,7 @@ import EditAccount from './components/editAccount/editAccount'
 import SearchPage from './components/searchPage/searchPage'
 import Home from './components/home/home'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
+import DetailsPage from './components/detailsPage/detailsPage'
 
 const BaseRouter = () =>(
     <Switch>
@@ -20,6 +21,7 @@ const BaseRouter = () =>(
         <Route exact path='/register/' component ={Register} />
         <PrivateRoute exact path='/accounts/' component={EditAccount}/>
         <PrivateRoute exact path='/searchFeed/' component={SearchPage}/>
+        <Route exact path='/detailsPage/' component={DetailsPage}/>
 
 
     </Switch>   

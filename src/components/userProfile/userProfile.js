@@ -15,7 +15,7 @@ const UserProfile = (props) =>{
     const {user , userData, stalkUser} = useSelector(state => state , shallowEqual)
     const feed = useSelector(state => state.userPosts)
     const next = useSelector(state => state.next)
-    const previous = useSelector(state => state.previous)
+    // const previous = useSelector(state => state.previous)
     const count = useSelector(state => state.count)
 
     const dispatch = useDispatch()
@@ -27,6 +27,7 @@ const UserProfile = (props) =>{
         dispatch(loadUserOnUsername(userId))
         dispatch(feedload(userId))
          
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
 

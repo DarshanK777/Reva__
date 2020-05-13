@@ -13,13 +13,14 @@ const FeedGrid = (props) =>{
     const dispatch = useDispatch()
     const mainFeedData = useSelector(state => state.mainFeedData)
     const mainNext = useSelector(state => state.mainNext)
-    const mainPrevious = useSelector(state => state.mainPrevious)
+    // const mainPrevious = useSelector(state => state.mainPrevious)
     const mainCount = useSelector(state => state.mainCount)
 
     useEffect(()=>{
-        // console.log('trials')
         dispatch(loadMainFeed())
-        // console.log(mainFeedData)
+
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     

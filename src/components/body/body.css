@@ -8,7 +8,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 75px;
+    padding-top: 8vh;
     max-height: 100%;
     overflow-y: scroll;
     overflow-x: none;
@@ -20,4 +20,15 @@
     
 } 
 
+@media (max-width: 740px) {
+    .content-body{
+        padding-top: 7vh;
+    }
+  }
+
+@media (max-width: 600px) {
+    .content-body{
+        padding-top: 7vh;
+    }
+}
 

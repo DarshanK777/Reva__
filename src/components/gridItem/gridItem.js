@@ -6,40 +6,25 @@ import { connect } from 'react-redux'
 
 class GridItem extends Component{
 
-    state ={
-        open : false,
-    }
-
-    // handleClick = () =>{
-    //         this.setState({
-    //             open:true
-    //         }) 
-    //         // console.log(this.state.open)
-    // }
-
-    // modalClose = (data) =>{
-    //     this.setState({
-    //         open: data
-    //     })
-    // }
 
     handleUserLoad = (username) =>{
         this.props.history.push(`/profile/${username}`)
     }
 
+    handleOnClickItem = (event) =>{
+        event.preventDefault()
+        console.log(this.props)
+        this.props.history.push('/detailsPage/', this.props.data)
+    }
+
     render(){
-        const { data} = this.props
-        // console.log(data.image)
-        // onClick={() => history.push({pathname:`/det/${data.id}`, data: data})}
+        const {  data} = this.props
+         
         return(
             <Fragment>
                 <div className='grid-item' > 
-                {/* {
-                    this.state.open ? <DetailModal open={this.state.open} close={this.modalClose} data={data} /> : null
-                } */}
-
                 {/*  add on hover effect to grid-item */}
-                    <img src={data.image} alt="usasd" onClick={()=>{}}  />
+                    <img src={data.image} alt="usasd" onClick={this.handleOnClickItem} />
 
                     <div className="grid-item-details">
                        <div className="grid-details-content">

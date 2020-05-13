@@ -64,7 +64,7 @@ class Register extends React.Component{
                             <div className="register-tooltip">
                             {
                                 errors?
-                                <Tooltip error={errors.username} />:
+                                <Tooltip error={errors.username} />: 
                                 null
                             }
                             </div>                  

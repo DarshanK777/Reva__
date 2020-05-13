@@ -1,4 +1,4 @@
-from rest_framework.generics import RetrieveUpdateAPIView, ListCreateAPIView, RetrieveAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, ListCreateAPIView, RetrieveAPIView, ListAPIView
 from rest_framework import permissions
 from rest_framework.views import APIView 
 from django.contrib.auth import get_user_model
@@ -6,6 +6,7 @@ from accounts.api.serializers import UserSerializer, FollowingSerializer
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from accounts.models import Friends
+from rest_framework import filters
 from django.db import IntegrityError
 
 User = get_user_model()
@@ -33,6 +34,15 @@ class GetOneUser(RetrieveAPIView):
     def get_object(self):
         username = self.kwargs['pk']
         return User.objects.get(username=username)
+
+
+# For searching users (as search filter works only with list api view)
+class ListUsers(ListAPIView):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username', 'email', 'first_name', 'last_name']
 
 # FRIEND SYSTEM 
 class FriendsView(ListCreateAPIView):

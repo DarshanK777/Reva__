@@ -15,6 +15,7 @@ from rest_framework.authtoken.models import Token
 from django.db.models import Q
 import itertools
 from datetime import datetime
+from rest_framework import filters
 from .pagination import PostLimitOffsetPagination
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
@@ -45,6 +46,8 @@ class PostListCreateView(ListCreateAPIView):
     serializer_class = PostSerializer
     parser_classes = (MultiPartParser, FormParser)
     pagination_class = PostLimitOffsetPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['caption']
 
     # filtering queryset as per the user
     def get_queryset(self, **kwargs):

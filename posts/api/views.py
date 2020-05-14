@@ -69,16 +69,15 @@ class PostListCreateView(ListCreateAPIView):
         })
 
 
-
 class MainFeed(APIView):
     # Getting followers posts
     def get(self, request, *args, **kwargs):
-        paginator = PostLimitOffsetPagination()
         
+        paginator = PostLimitOffsetPagination()
         user = request.user
         friends_queryset = Friends.objects.filter(user_id=user).filter(accepted=True)
         friends_list_one = list(friends_queryset.values_list('following_user_id', flat=True))
-        friends_list_id = friends_list_one + [request.user.id]
+        friends_list_id = friends_list_one + [request.user.id] 
         posts = Post.objects.filter(user__in=friends_list_id)
         res = paginator.paginate_queryset(posts, request)
         sorted_res = sorted(res, key=lambda y: y.posted_at, reverse=True)
@@ -86,3 +85,26 @@ class MainFeed(APIView):
         serialize = PostSerializer(sorted_res, many=True, context={"request": request})
         return paginator.get_paginated_response(serialize.data)
         
+
+class CommentList(ListCreateAPIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CommentsSerializer
+
+    def get_queryset(self, **kwargs):
+        post_id = self.kwargs.get('id')
+        post = Post.objects.get(pk=post_id)
+        return Comments.objects.filter(post=post)
+    
+    def perform_create(self, serializer):
+        post_id = self.kwargs.get('id')
+        post = Post.objects.get(pk=post_id)
+        serializer.save(from_user=self.request.user, post=post)
+    
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        return Response({
+            'status': 200,
+            'message': 'Comment Successfull',
+            'data': response.data
+        })

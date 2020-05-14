@@ -37,12 +37,12 @@ class PostSerializer(serializers.ModelSerializer):
 
 # comment serializer
 class CommentsSerializer(serializers.ModelSerializer):
-    from_user = UserSerializer()
-    post = PostSerializer()
+    from_user = UserSerializer(read_only=True)
+    post = PostSerializer(read_only=True)
 
     class Meta:
         model = Comments
-        fields = ('from_user', 'post')
+        fields = ('from_user', 'post', 'comment_content', 'timestamp') 
 
 
 # class FeedSerializer(serializers.Serializer):

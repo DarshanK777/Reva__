@@ -25,7 +25,7 @@ class Comments(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     comment_content = models.CharField(max_length=175)
 
-    class Meta:
+    class Meta: 
         default_related_name = 'comments'
 
     def __str__(self):

@@ -1,5 +1,5 @@
 import {USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, FEED_LOADING, FEED_LOADED,
-        MAINFEED_LOADED, MAINFEED_LOADING, STALK_USER, STALK_LOADING, COMMENTS_RETRIEVED
+        MAINFEED_LOADED, MAINFEED_LOADING, STALK_USER, STALK_LOADING, COMMENTS_RETRIEVED, POST_SUCCESS
 } from '../actions/actionTypes'
 
 const intialState = {
@@ -12,14 +12,15 @@ const intialState = {
     mainFeed: '',
     stalkUser: null,
     userPosts: '',
-    mainFeedData: ''
+    mainFeedData: '',
+    mainNextFeed: ''
 };
 
 export default function(state=intialState, action){
     switch(action.type){
         case USER_LOADING:
             return{
-                ...state,
+                ...state, 
                 isLoading: true,
                 
             }
@@ -59,6 +60,7 @@ export default function(state=intialState, action){
             }
 
         case FEED_LOADED:
+            
             return{
                 ...state,
                 feedloaded: true,
@@ -76,6 +78,15 @@ export default function(state=intialState, action){
         case STALK_LOADING:
             return{
                 ...state,
+            }
+        
+        case POST_SUCCESS:
+            return{
+                ...state,
+                userPosts:'',
+                mainFeedData:'',
+                mainFeed: false,
+                feedloaded: false
             }
         
         case MAINFEED_LOADED:

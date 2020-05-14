@@ -15,10 +15,13 @@ const FeedGrid = (props) =>{
     const mainNext = useSelector(state => state.mainNext)
     // const mainPrevious = useSelector(state => state.mainPrevious)
     const mainCount = useSelector(state => state.mainCount)
+    console.log(mainNext)
 
     useEffect(()=>{
+    
+        if(mainNext!==false){
         dispatch(loadMainFeed())
-
+        }
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -31,7 +34,7 @@ const FeedGrid = (props) =>{
     }
 
     return(
-        <div className='feedGrid-container'>
+        <div className='feedGrid-container'> 
              {
                     mainFeed ? 
                     <InfiniteScroll

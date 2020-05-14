@@ -67,6 +67,7 @@ export const loadMainFeed = () => (dispatch, getState) =>{
 
     axios.get(`${PORT_NO}/api/posts/mainFeed/`, tokenConfig(getState))
     .then(res =>{
+      console.log('loading mainfeed')
         dispatch({
             type: MAINFEED_LOADED,
             payload: res.data
@@ -160,7 +161,7 @@ export const postComments = (imageId, comment_content) => (dispatch, getState) =
       config.headers['Authorization'] = `Token ${token}`;
     }
 
-  axios.post(`${PORT_NO}/api/posts/commentsFeed/${imageId}/`, {
+  axios.post(`${PORT_NO}/api/posts/commentsFeed/${imageId}/`, { 
         comment_content
       }, config)
   .then((res)=>{

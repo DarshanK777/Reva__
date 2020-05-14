@@ -55,10 +55,14 @@
     - connect detail (image and user details ) page with api (reducers and all) (done)
     
 #14th may:
-    - infinite scroll state update error (STATE UPDATION ERROR , DO AT NIGHT) !important 
+    - infinite scroll state update error (STATE UPDATION ERROR , DO AT NIGHT) !important (done)
     - comments system api(list and create done)(done)
     - connect comments to the detail page(reducers)(list and create)(done)
     
+
+*Note: just go trough the feed load reducer and actions
+
+
 #15th may:
     - search feed to frontend
     - canvas size bug

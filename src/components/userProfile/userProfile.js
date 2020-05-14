@@ -25,7 +25,9 @@ const UserProfile = (props) =>{
     useEffect(()=>{
         console.log(user)
         dispatch(loadUserOnUsername(userId))
-        dispatch(feedload(userId))
+        if(next !== false){
+            dispatch(feedload(userId))
+        }
          
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])

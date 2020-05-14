@@ -1,5 +1,5 @@
 import {USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, FEED_LOADING, FEED_LOADED,
-        MAINFEED_LOADED, MAINFEED_LOADING, STALK_USER, STALK_LOADING
+        MAINFEED_LOADED, MAINFEED_LOADING, STALK_USER, STALK_LOADING, COMMENTS_RETRIEVED
 } from '../actions/actionTypes'
 
 const intialState = {
@@ -98,6 +98,12 @@ export default function(state=intialState, action){
                 stalkUser:true,
                 userData: action.payload,
                 
+            }
+        
+        case COMMENTS_RETRIEVED:
+            return{
+                ...state,
+                comments: action.payload
             }
         default:
             return state

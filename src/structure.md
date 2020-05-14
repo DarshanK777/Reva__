@@ -43,25 +43,24 @@
 
 #10th may:
     - alg for search feed api(done)
-    - edited header.js resposive
-    - change header icon placement
+    - edited header.js resposive(done)
+    - change header icon placement(done)
     
 #11th may: 
     - develop page for post details(done) 
     - details page to responsive(done)
 
 #13th may:
-    - login page error notice
+    - login page error notice(done)
     - connect detail (image and user details ) page with api (reducers and all) (done)
     
 #14th may:
     - infinite scroll state update error (STATE UPDATION ERROR , DO AT NIGHT) !important 
-    - search feed to frontend
-    
-    - comments system api
-    - connect comments to the detail page(reducers)
+    - comments system api(list and create done)(done)
+    - connect comments to the detail page(reducers)(list and create)(done)
     
 #15th may:
+    - search feed to frontend
     - canvas size bug
     - image lazy loading
     - see to header doesnt show during login page
@@ -79,4 +78,5 @@
     - learn basic testing and test the system
 
 #17th may - 21st may:
+    - misc things(update and delete comments)
     - send app to company.

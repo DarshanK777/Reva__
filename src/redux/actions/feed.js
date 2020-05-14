@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { FEED_LOADED, FEED_LOADING, FEED_ERROR, POST_FAIL,
-  POST_SUCCESS, MAINFEED_LOADING, MAINFEED_LOADED, MAINFEED_ERROR, NEXTFEED_LOADING, MAINNEXTFEED_LOADING } from './actionTypes'
+  POST_SUCCESS, MAINFEED_LOADING, MAINFEED_LOADED, MAINFEED_ERROR, NEXTFEED_LOADING, MAINNEXTFEED_LOADING, POSTING_COMMENT, COMMENT_POSTED, COMMENT_ERROR,
+  RETRIEVING_COMMENTS, COMMENTS_RETRIEVED } from './actionTypes'
 import {PORT_NO} from '../../utils/sense'
 
   // LOAD TOKEN FUNCTION
@@ -119,5 +120,60 @@ export const postImage = (image, caption, user) => async (dispatch, getState) =>
     dispatch({type: POST_FAIL})
     return err
   }
+
+}
+
+export const getPostComments = (imageId) => (dispatch, getState) =>{
+
+  dispatch({type: RETRIEVING_COMMENTS})
+
+  axios.get(`${PORT_NO}/api/posts/commentsFeed/${imageId}`,tokenConfig(getState))
+  .then((res)=>{
+      dispatch({
+        type: COMMENTS_RETRIEVED,
+        payload: res.data
+      })
+  }).catch((error)=>{
+      dispatch({
+        type: COMMENT_ERROR,
+      })
+      console.log(error)
+  })
+
+}
+
+
+export const postComments = (imageId, comment_content) => (dispatch, getState) =>{
+
+  dispatch({type: POSTING_COMMENT})
+
+  const token = getState().token;
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+  
+    
+    if (token) {
+      config.headers['Authorization'] = `Token ${token}`;
+    }
+
+  axios.post(`${PORT_NO}/api/posts/commentsFeed/${imageId}/`, {
+        comment_content
+      }, config)
+  .then((res)=>{
+      dispatch({
+        type: COMMENT_POSTED,
+        payload: res.data
+      })
+      dispatch(getPostComments(imageId))
+  }).catch((error)=>{
+      dispatch({
+        type: COMMENT_ERROR,
+      })
+      console.log(error)
+  })
 
 }

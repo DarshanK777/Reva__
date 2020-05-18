@@ -20,7 +20,7 @@ const Header= ({history}) =>{
             <div className="right">
                 <img className="images addPost-header"  src="/images/icons/camera.svg" onClick={() => history.push({pathname:`/addPost/`})} alt="usasd" />
 
-                <img className="images" src="/images/icons/search.svg" alt="usasd" />
+                <img className="images" src="/images/icons/search.svg" alt="usasd" onClick={() => history.push({pathname:`/searchFeed/`})}  />
                 <img className="images" src="/images/icons/profilex.svg" onClick={() => history.push({pathname:`/profile/`})} alt="usasd" />
                  
 

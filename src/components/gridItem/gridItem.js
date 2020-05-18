@@ -1,58 +1,35 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import './gridItem.css'
-import {withRouter} from 'react-router-dom'
-import { connect } from 'react-redux'
 
+const GridItem = React.forwardRef((props, ref)=>{
 
-class GridItem extends Component{
-
-
-    handleUserLoad = (username) =>{
-        this.props.history.push(`/profile/${username}`)
+    const handleUserLoad = (username) =>{
+        props.history.push(`/profile/${username}`)
     }
 
-    handleOnClickItem = (event) =>{
-        event.preventDefault()
-        console.log(this.props)
-        this.props.history.push('/detailsPage/', this.props.data)
+    const handleOnClickItem = () =>{
+        props.history.push('/detailsPage/', props.data)
     }
+    
+    const {data} = props
+    
+    return(
+        <div ref={ref} className='grid-item' > 
+            <img src={data.image} alt="usasd" onClick={() => handleOnClickItem()} />
 
-    render(){
-        const {  data} = this.props
-         
-        return(
-            <Fragment>
-                <div className='grid-item' > 
-                {/*  add on hover effect to grid-item */}
-                    <img src={data.image} alt="usasd" onClick={this.handleOnClickItem} />
+            <div className="grid-item-details">
+               <div className="grid-details-content">
+                    <span className="avatar">
+                        <img src="/images/icons/circle.svg" alt="usasd" />                            
+                    </span>
+                    <span className="grid-username" onClick={() => handleUserLoad(data.user.username)}>
+                        {data.user.username}
+                    </span>
+               </div>
+            </div>
+        </div>
+    )
+})
 
-                    <div className="grid-item-details">
-                       <div className="grid-details-content">
-                            <span className="avatar">
-                                <img src="/images/icons/circle.svg" alt="usasd" />                            
-                            </span>
-                            <span className="grid-username" onClick={() => this.handleUserLoad(data.user.username)}>
-                                {data.user.username}
-                            </span>
-                       </div>
-                    </div>
-                </div>
-                
-            </Fragment>
-        )
-    }
-}
 
-const mapStateToProps = state =>{
-    return{
-
-    }
-}
-
-const mapDispatchToProps = dispatch =>{
-    return{
-
-    }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GridItem))
+export default GridItem

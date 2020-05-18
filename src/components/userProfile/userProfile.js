@@ -1,54 +1,84 @@
-import React,{useEffect, Fragment} from 'react'
+import React,{useEffect, useState, Fragment, useCallback, useRef} from 'react'
 import './userProfile.css'
 import Grid from '../grid/grid'
-import {feedload, loadNextFeed} from '../../redux/actions/feed'
 import {useSelector, useDispatch, shallowEqual} from 'react-redux'
 import { logout, loadUserOnUsername } from '../../redux/actions/auth'
-import { sendFollowRequest} from '../../redux/actions/updateAccount'
-import InfiniteScroll from "react-infinite-scroll-component";
-
-
-
+import { sendFollowRequest } from '../../redux/actions/updateAccount'
+import {getUserFeed, getUserNextFeed} from '../../utils/feedApiCalls'
 
 const UserProfile = (props) =>{
 
+    // setting states
+    const [loading, setLoading ] = useState(true)
+    const [feed, setFeed ] = useState('')
+    const [next, setNext ] = useState(false)
+    const [hasMore, setHasMore] = useState(true)
+    const [feedLoading, setFeedLoading ] = useState(true)
+
+    // getiing state from redux
     const {user , userData, stalkUser} = useSelector(state => state , shallowEqual)
-    const feed = useSelector(state => state.userPosts)
-    const next = useSelector(state => state.next)
-    // const previous = useSelector(state => state.previous)
-    const count = useSelector(state => state.count)
 
     const dispatch = useDispatch()
-    const feedloaded = useSelector(state => state.feedloaded)
     const userId = props.match.params.username ? props.match.params.username : user.username
 
-    useEffect(()=>{
-        console.log(user)
-        dispatch(loadUserOnUsername(userId))
-        if(next !== false){
-            dispatch(feedload(userId))
+    // scroll observer
+    const observer = useRef()
+    const lastGridItem = useCallback(node=>{
+        if(loading) return
+        if(observer.current) observer.current.disconnect()
+        observer.current = new IntersectionObserver(entries =>{
+            if(entries[0].isIntersecting && hasMore){
+                console.log('visible')
+                loadFeed()
+            }
+        })
+        if(node) observer.current.observe(node)
+
+        console.log(node)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading, hasMore])  
+
+    // load feed
+    const loadFeed = async () =>{
+        let data
+        setLoading(true)
+        if (next!==false){
+            data = await getUserNextFeed(next)
         }
-         
+        else{
+            data = await getUserFeed(userId)
+        }
+        setFeed(prevState =>{
+            return [
+                ...prevState,
+                ...data.results
+            ]
+        })
+        setNext(
+            data.next!==null ? data.next : false
+        )
+        setHasMore(
+            data.next === null ? false : true
+        )
+        setLoading(false)
+        setFeedLoading(false)
+    }
+
+    useEffect(()=>{
+        dispatch(loadUserOnUsername(userId))
+        if(user){
+            loadFeed()
+        } 
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
-
-
-    const handleNext = (next) =>{
-        if(next !== false){
-            dispatch(loadNextFeed(next))
-        }    
-    }
     
-
     return(
         <Fragment>
             {
                 stalkUser ?
                 <div className="profile-container">
                     <div className="profileSidebar">
-                        {
-                        console.log(feed)
-                    }
                         <div className="profileImage">
                             <img src='/images/03.jpg' alt="asd" />
                         </div>
@@ -67,7 +97,7 @@ const UserProfile = (props) =>{
                                         <b> {(userData.followers).length}</b> followers
                                     </span>
                                     <span>
-                                     <b>{feedloaded? feed.length: 0}</b> posts
+                                     <b>{loading? 0 : feed.length}</b> posts
                                     </span>
                                     <span>  
                                     <b>{(userData.following).length}</b> following
@@ -111,9 +141,8 @@ const UserProfile = (props) =>{
                                     </span>
                                     <span >
                                     {
-                                        feedloaded?
-                                         feed.length:
-                                         0
+                                        loading?0:
+                                         feed.length
                                     }
                                     </span>
                                     <span >
@@ -153,24 +182,10 @@ const UserProfile = (props) =>{
                     </div>
                     <div className="profilePosts">
                         {
-                            feedloaded ?
-                                <InfiniteScroll
-                                    dataLength={count}
-                                    next = {handleNext(next)}
-                                    hasMore={next}
-                                    loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
-                                    endMessage={
-                                        <p style={{ textAlign: "center" }}>
-                                          <b>End of Posts</b>
-                                        </p>
-                                      }
-                                >
-
-                                    <Grid feed={feed}/>
-                                
-                                </InfiniteScroll>
-                                :
+                            feedLoading ?
                                 <h1>loading</h1>
+                                : 
+                                <Grid ref={lastGridItem} feed={feed}/> 
                         }
                     </div>
                 </div>:

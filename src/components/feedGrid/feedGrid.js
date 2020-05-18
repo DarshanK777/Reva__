@@ -1,60 +1,82 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState, useRef, useCallback, Fragment} from 'react'
 import './feedGrid.css'
 import Grid from '../grid/grid'
-import {  useDispatch, useSelector } from 'react-redux'
-import { loadMainFeed, loadNextMainFeed } from '../../redux/actions/feed'
-import InfiniteScroll from "react-infinite-scroll-component";
+import {useSelector} from 'react-redux'
 
+import {getMainFeed, getNextMainFeed} from '../../utils/feedApiCalls'
 
 
 const FeedGrid = (props) =>{
 
-    const mainFeed = useSelector(state => state.mainFeed)
-    const dispatch = useDispatch()
-    const mainFeedData = useSelector(state => state.mainFeedData)
-    const mainNext = useSelector(state => state.mainNext)
-    // const mainPrevious = useSelector(state => state.mainPrevious)
-    const mainCount = useSelector(state => state.mainCount)
-    console.log(mainNext)
+    const [loading, setLoading ] = useState(true)
+    const [feedLoading, setFeedLoading ] = useState(true)
+    const [mainFeedData, setMainFeedData ] = useState('')
+    const [next, setNext ] = useState(false)
+    const [hasMore, setHasMore] = useState(true)
+    const user = useSelector(state => state.user)
 
-    useEffect(()=>{
-    
-        if(mainNext!==false){
-        dispatch(loadMainFeed())
+    // scroll code
+    const observer = useRef()
+    const lastGridItem = useCallback(node=>{
+        if(loading) return
+        if(observer.current) observer.current.disconnect()
+        observer.current = new IntersectionObserver(entries =>{
+            if(entries[0].isIntersecting && hasMore){
+                console.log('visible')
+                loadFeed()
+            }
+        })
+        if(node) observer.current.observe(node)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading, hasMore])  
+
+    // api call
+    const loadFeed = async () =>{
+        let data
+        setLoading(true)
+        if (next!==false){
+            data = await getNextMainFeed(next)
         }
-        
+        else{
+            // console.log('this')
+            data = await getMainFeed()
+        }
+        setMainFeedData(prevState =>{
+            return [
+                ...prevState,
+                ...data.results
+            ]
+        })
+        setNext(
+            data.next!==null ? data.next : false
+        )
+        setHasMore(
+            data.next === null ? false : true
+        )
+        setLoading(false)
+        setFeedLoading(false)
+    }
+
+    // loading the feed on component mount
+    useEffect(()=>{
+        if(user){
+            loadFeed()
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    
-    const handleNext = (next) =>{
-        if(next !== false){
-            dispatch(loadNextMainFeed(next))
-        }    
-    }
 
     return(
         <div className='feedGrid-container'> 
              {
-                    mainFeed ? 
-                    <InfiniteScroll
-                        dataLength={mainCount}
-                        next = {handleNext(mainNext)}
-                        hasMore={mainNext}
-                        loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
-                        endMessage={
-                            <p style={{ textAlign: "center", bottom: 0 }}>
-                                
-                            </p>
-                            }
-                                >
-
-                                    <Grid feed={mainFeedData}/>
-                                
-                                </InfiniteScroll>
-                                :
-                                <h1>loading</h1>
-                }
+                feedLoading ? 
+                    <h1>loading</h1>
+                :
+                    <Fragment>
+                        <Grid {...props} ref={lastGridItem}feed={mainFeedData}/>
+                    <div>{loading && 'Loading...'}</div>
+                    </Fragment>
+            }
         </div>
     )
 }

@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 
 
 
-const store = createStore(rootReducer, composeWithDevTools(
+export const store = createStore(rootReducer, composeWithDevTools(
   applyMiddleware(thunk)
 ))
 

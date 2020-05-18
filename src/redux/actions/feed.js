@@ -1,7 +1,9 @@
 import axios from 'axios'
-import { FEED_LOADED, FEED_LOADING, FEED_ERROR, POST_FAIL,
-  POST_SUCCESS, MAINFEED_LOADING, MAINFEED_LOADED, MAINFEED_ERROR, NEXTFEED_LOADING, MAINNEXTFEED_LOADING, POSTING_COMMENT, COMMENT_POSTED, COMMENT_ERROR,
-  RETRIEVING_COMMENTS, COMMENTS_RETRIEVED } from './actionTypes'
+import { POST_FAIL,
+  POST_SUCCESS, POSTING_COMMENT, COMMENT_POSTED, COMMENT_ERROR,
+  RETRIEVING_COMMENTS, COMMENTS_RETRIEVED, RETRIEVING_SEARCH_USERS,  SEARCH_USERS_RETRIEVED, 
+  // RETRIEVING_SEARCH_POSTS, SEARCH_POSTS_RETRIEVED,
+} from './actionTypes'
 import {PORT_NO} from '../../utils/sense'
 
   // LOAD TOKEN FUNCTION
@@ -23,86 +25,8 @@ export const tokenConfig = (getState) => {
   return config;
 };
 
-
-// FEED LOAD INCOMPLETE
-export const feedload = (pk) => (dispatch, getState) =>{
-    dispatch({type: FEED_LOADING})
-    axios.get(`${PORT_NO}/api/posts/listCreate/${pk}`, tokenConfig(getState))
-    .then(res =>{
-        dispatch({
-            type: FEED_LOADED,
-            payload: res.data
-    });
-    }).catch(err=>{
-        console.log(err)
-        dispatch({
-            type: FEED_ERROR,
-
-        })
-    })
-}
-
-export const loadNextFeed = (link) => (dispatch, getState) =>{
-  dispatch({type: NEXTFEED_LOADING})
-  
-  axios.get(link, tokenConfig(getState))
-  .then((res)=>{
-      dispatch({
-        type: FEED_LOADED,
-        payload: res.data
-  })
-  }).catch(err=>{
-    console.log(err)
-    dispatch({
-        type: FEED_ERROR,
-
-    })
-  })
-}
-
-
-// LOAD MAIN FEED  
-export const loadMainFeed = () => (dispatch, getState) =>{
-    dispatch({type: MAINFEED_LOADING})
-
-    axios.get(`${PORT_NO}/api/posts/mainFeed/`, tokenConfig(getState))
-    .then(res =>{
-      console.log('loading mainfeed')
-        dispatch({
-            type: MAINFEED_LOADED,
-            payload: res.data
-    });
-    }).catch(err=>{
-        console.log(err)
-        dispatch({
-            type: MAINFEED_ERROR,
-
-        })
-    })
-}
-
-
-export const loadNextMainFeed = (link) => (dispatch, getState) =>{
-  dispatch({type: MAINNEXTFEED_LOADING})
-  
-  axios.get(link, tokenConfig(getState))
-  .then((res)=>{
-      dispatch({
-        type: MAINFEED_LOADED,
-        payload: res.data
-  })
-  }).catch(err=>{
-    console.log(err)
-    dispatch({
-        type: MAINFEED_ERROR,
-
-    })
-  })
-}
-
-
 // UPLOAD IMAGE
-export const postImage = (image, caption, user) => async (dispatch, getState) =>{
+export const postImage = (image, caption) => async (dispatch, getState) =>{
 
   console.log('this is executed')
 
@@ -113,12 +37,10 @@ export const postImage = (image, caption, user) => async (dispatch, getState) =>
   try{
     const post = await axios.post(`${PORT_NO}/api/posts/createPost/`, formData, tokenConfig(getState))
     dispatch({type:POST_SUCCESS})
-    dispatch(feedload(user))
-    dispatch(loadMainFeed())
     return post.data.message
 
   }catch(err){
-    dispatch({type: POST_FAIL})
+    dispatch({type: POST_FAIL}) 
     return err
   }
 
@@ -178,3 +100,21 @@ export const postComments = (imageId, comment_content) => (dispatch, getState) =
   })
 
 }
+
+export const searchFeedUser = (value) => (dispatch, getState) =>{
+
+  dispatch({type: RETRIEVING_SEARCH_USERS})
+
+  axios.get(`${PORT_NO}/api/users?search=${value}`,tokenConfig(getState))
+  .then((res)=>{
+    dispatch(
+      {
+        type: SEARCH_USERS_RETRIEVED,
+        payload: res.data
+      }
+    )
+  })
+
+
+}
+

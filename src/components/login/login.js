@@ -47,9 +47,6 @@ class Login extends React.Component{
 
                     <div className="login-title">
                         Login
-                        {
-                            console.log(this.props)
-                        }
                     </div>
                     
 

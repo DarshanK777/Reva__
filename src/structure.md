@@ -59,28 +59,41 @@
     - comments system api(list and create done)(done)
     - connect comments to the detail page(reducers)(list and create)(done)
     
-
-*Note: just go trough the feed load reducer and actions
-
+*Note: just go trough the feedload reducer and actions
 
 #15th may:
-    - search feed to frontend
+    no work done
+
+
+# what now to do:
+- everything got fucked
+- write the whole feed grid / profile grid without reducers and dispatch
+    - reducers and dispatched removed from:
+        - the code for mainfeed and userfeed (done)
+        - settings page
+        - search page
+
+- debug the errors
+- write new infinite scroll component for urself (done)
+- check if user is loaded send token throught the function itself (done)
+- solve more errors and complete it by 21st may and do below works
+
+
+
+
+#work when ever u want and take 2-3 days break:
+    - search feed to frontend (user grid has to be completed)(done)
+    - user search to frontend with reducers(done)
+    - post search api and to frontend with reducers(?)
+    - see to header doesnt show during login page(to be resolved later)
     - canvas size bug
     - image lazy loading
-    - see to header doesnt show during login page
-
-#16th may:
     - animations and transitions
     - loader and ui salts
     - make seperate reducers
     - optimize the algorithms more
-    
-
-#17th may:
     - deploy app to server heroku
     - test it online 
     - learn basic testing and test the system
-
-#17th may - 21st may:
     - misc things(update and delete comments)
     - send app to company.

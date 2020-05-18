@@ -16,7 +16,7 @@ from django.db.models import Q
 import itertools
 from datetime import datetime
 from rest_framework import filters
-from .pagination import PostLimitOffsetPagination
+from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 
@@ -73,7 +73,7 @@ class MainFeed(APIView):
     # Getting followers posts
     def get(self, request, *args, **kwargs):
         
-        paginator = PostLimitOffsetPagination()
+        paginator = PostPageNumberPagination()
         user = request.user
         friends_queryset = Friends.objects.filter(user_id=user).filter(accepted=True)
         friends_list_one = list(friends_queryset.values_list('following_user_id', flat=True))

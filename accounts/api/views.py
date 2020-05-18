@@ -8,6 +8,7 @@ from rest_framework.authtoken.models import Token
 from accounts.models import Friends
 from rest_framework import filters
 from django.db import IntegrityError
+from accounts.api.pagination import UsersPageNumberPagination, UsersLimitOffsetPagination
 
 User = get_user_model()
 
@@ -39,6 +40,7 @@ class GetOneUser(RetrieveAPIView):
 # For searching users (as search filter works only with list api view)
 class ListUsers(ListAPIView):
 
+    pagination_class = UsersLimitOffsetPagination
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [filters.SearchFilter]

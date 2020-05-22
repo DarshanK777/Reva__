@@ -33,29 +33,32 @@ const FeedGrid = (props) =>{
 
     // api call
     const loadFeed = async () =>{
-        let data
-        setLoading(true)
-        if (next!==false){
-            data = await getNextMainFeed(next)
-        }
-        else{
-            // console.log('this')
-            data = await getMainFeed()
-        }
-        setMainFeedData(prevState =>{
-            return [
-                ...prevState,
-                ...data.results
-            ]
-        })
-        setNext(
-            data.next!==null ? data.next : false
-        )
-        setHasMore(
-            data.next === null ? false : true
-        )
-        setLoading(false)
-        setFeedLoading(false)
+        console.log('inside')
+        setTimeout(async ()=>{
+            let data
+            setLoading(true)
+            if (next!==false){
+                data = await getNextMainFeed(next)
+            }
+            else{
+                // console.log('this')
+                data = await getMainFeed()
+            }
+            setMainFeedData(prevState =>{
+                return [
+                    ...prevState,
+                    ...data.results
+                ]
+            })
+            setNext(
+                data.next!==null ? data.next : false
+            )
+            setHasMore(
+                data.next === null ? false : true
+            )
+            setLoading(false)
+            setFeedLoading(false)
+        }, 5000)
     }
 
     // loading the feed on component mount
@@ -73,7 +76,7 @@ const FeedGrid = (props) =>{
                     <h1>loading</h1>
                 :
                     <Fragment>
-                        <Grid {...props} ref={lastGridItem}feed={mainFeedData}/>
+                        <Grid {...props} ref={lastGridItem} feed={mainFeedData}/>
                     <div>{loading && 'Loading...'}</div>
                     </Fragment>
             }

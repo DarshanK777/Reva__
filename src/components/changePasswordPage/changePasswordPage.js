@@ -1,7 +1,8 @@
 import React from 'react'
 import './changePasswordPage.css'
-import{ connect } from 'react-redux'
-import { updatePassword} from '../../redux/actions/updateAccount'
+import {updatePassword} from '../../utils/updateSettings'
+import Tooltip from '../tooltip/tooltip'
+
 
 class ChangePasswordPage extends React.Component{
 
@@ -17,33 +18,74 @@ class ChangePasswordPage extends React.Component{
         })
     }
 
-    handleSubmit = event =>{
+    handleSubmit = async (event) =>{
         event.preventDefault()
-        this.props.onUpdatePassword(
+        const res = await updatePassword(
             this.state.oldPassword,
             this.state.newPassword1,
-            this.state.newPassword2
+            this.state.newPassword2 
         )
+        this.setState({
+            errors : res.errors
+        })
     }
     render(){
+        const {errors} = this.state
+
         return(
             <div className="changePassword-container">
                 <form className="changePassword-form" onSubmit={this.handleSubmit}>
-                    <label className="changePassword-label">Old Password</label>
-                    <input type="password" className="changePassword-input"
-                        name="oldPassword" 
-                        value={this.state.oldPassword} 
-                        onChange={this.handleChange} />
-                    <label className="changePassword-label">New Password</label>
-                    <input type="password" className="changePassword-input" 
-                        name="newPassword1" 
-                        value={this.state.newPassword1} 
-                        onChange={this.handleChange}/> 
-                    <label className="changePassword-label">New Password again</label>
-                    <input type="password" className="changePassword-input" 
-                        name="newPassword2" 
-                        value={this.state.newPassword2} 
-                        onChange={this.handleChange}/> 
+                    <div className="passwordPage-holder">
+                        {
+                            console.log(errors)
+                        }
+                        <label className="changePassword-label">Old Password</label>
+                        <input type="password" className="changePassword-input"
+                            name="oldPassword" 
+                            value={this.state.oldPassword} 
+                            onChange={this.handleChange} />
+
+                        <div className="password-tooltip">
+                            {
+                                errors ?
+                                <Tooltip error={errors.old_password} />: 
+                                null
+                            }
+                        </div>      
+                    </div>
+                    <div className="passwordPage-holder">
+                        <label className="changePassword-label">New Password</label>
+                        <input type="password" className="changePassword-input" 
+                            name="newPassword1" 
+                            value={this.state.newPassword1} 
+                            onChange={this.handleChange}/> 
+                        <div className="password-tooltip">
+                            {
+                                errors ?
+                                errors.old_password?
+                                <Tooltip error="invalid Password" />: 
+                                <Tooltip error={errors.new_password1} />: 
+                                null
+                            }
+                        </div>
+                    </div>
+                    <div className="passwordPage-holder">
+                        <label className="changePassword-label">New Password again</label>
+                        <input type="password" className="changePassword-input" 
+                            name="newPassword2" 
+                            value={this.state.newPassword2} 
+                            onChange={this.handleChange}/> 
+                        <div className="password-tooltip">
+                        {
+                                errors ?
+                                errors.old_password?
+                                <Tooltip error="invalid Password" />: 
+                                <Tooltip error={errors.new_password2} />: 
+                                null
+                            }
+                        </div>
+                        
+                    </div>
                     <button type="submit" className="changePassword-button" >
                         Save
                     </button>
@@ -53,10 +95,6 @@ class ChangePasswordPage extends React.Component{
     } 
 }
 
-const mapDispatchProps = dispatch =>{
-    return{
-        onUpdatePassword : (oldPassword, newPassword1, newPassword2) => dispatch(updatePassword(oldPassword, newPassword1, newPassword2))
-    }
-}
 
-export default connect(null, mapDispatchProps)(ChangePasswordPage)
+
+export default ChangePasswordPage

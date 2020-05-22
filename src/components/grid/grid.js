@@ -14,7 +14,7 @@ const Grid = React.forwardRef((props, ref)=>{
                 if(feed.length === index + 1){
                     
                     return(
-                        <GridItem {...props} ref={ref}  data={value} key={index} />  
+                        <GridItem {...props} ref={ref}  data={value} key={index}/>  
                     )}
                 
                 return( <GridItem {...props} data={value} key={index} /> )

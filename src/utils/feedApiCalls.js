@@ -10,7 +10,7 @@ export const tokenConfig = () => {
     const token = state.token
     const config = {
       headers: {
-        'content-Type': 'multipart/form-data',
+        'content-Type': 'application/json',
       },
     };
   
@@ -24,8 +24,8 @@ export const tokenConfig = () => {
 
 export const getMainFeed = async () =>{
     try{
-        const post = await  axios.get(`${PORT_NO}/api/posts/mainFeed/`, tokenConfig())
-        return post.data
+        const res = await  axios.get(`${PORT_NO}/api/posts/mainFeed/`, tokenConfig())
+        return res.data
 
     }catch(err){
         return err
@@ -34,8 +34,8 @@ export const getMainFeed = async () =>{
 
 export const getNextMainFeed = async (link) =>{
     try{
-        const post = await axios.get(link, tokenConfig())
-        return post.data
+        const res = await axios.get(link, tokenConfig())
+        return res.data
 
     }catch(err){
         return err
@@ -45,8 +45,8 @@ export const getNextMainFeed = async (link) =>{
 
 export const getUserFeed = async (pk) =>{
     try{
-        const post = await axios.get(`${PORT_NO}/api/posts/listCreate/${pk}`, tokenConfig())
-        return post.data
+        const res = await axios.get(`${PORT_NO}/api/posts/listCreate/${pk}`, tokenConfig())
+        return res.data
 
     }catch(err){
         return err
@@ -56,8 +56,8 @@ export const getUserFeed = async (pk) =>{
 
 export const getUserNextFeed = async (link) =>{
     try{
-        const post = await axios.get(link, tokenConfig())
-        return post.data
+        const res = await axios.get(link, tokenConfig())
+        return res.data
 
     }catch(err){
         return err
@@ -65,3 +65,27 @@ export const getUserNextFeed = async (link) =>{
 }
 
 
+export const searchFeedUser = async (value) =>{
+    try{
+        const res = await axios.get(`${PORT_NO}/api/users?search=${value}`,tokenConfig())
+        return res.data
+
+    }catch(err){
+        return err
+    }
+    
+}
+
+
+export const searchFeedNextUser = async (link) =>{
+    try{
+        const res = await axios.get(link,tokenConfig())
+        return res.data
+
+    }catch(err){
+        return err
+    }
+    
+}
+  
+  

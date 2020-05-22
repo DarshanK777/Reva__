@@ -66,17 +66,18 @@
 
 
 # what now to do:
-- everything got fucked
+- everything got messed up
 - write the whole feed grid / profile grid without reducers and dispatch
     - reducers and dispatched removed from:
         - the code for mainfeed and userfeed (done)
-        - settings page
-        - search page
+        - settings page (done but need to check)
+        - search page (done but it loads the whole page has to look to it)
+
 
 - debug the errors
 - write new infinite scroll component for urself (done)
 - check if user is loaded send token throught the function itself (done)
-- solve more errors and complete it by 21st may and do below works
+- solve more errors and complete it by 21st may and do below works (done 95%)
 
 
 
@@ -89,6 +90,7 @@
     - canvas size bug
     - image lazy loading
     - animations and transitions
+    - posts search Page
     - loader and ui salts
     - make seperate reducers
     - optimize the algorithms more

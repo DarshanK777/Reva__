@@ -1,36 +1,25 @@
-import React, { Fragment } from 'react'
+import React from 'react'
+import SearchUserItem from '../searchUserItem/searchUserItem'
 import './serachUserGrid.css'
 
-const SearchUserGrid = (props) =>{
+const SearchUserGrid = React.forwardRef((props, ref) =>{
     return(
         <div className="user-grid-search">
             {
+                console.log(ref)
+            }
+            {
                 props.data.map((value, index) =>{
-                    return(
-                        <Fragment>
-                            <div className="search-user-item" key={index}>
-                                <div className="search-user-image">
-                                    <img src="/images/03.jpg" alt=""/>
-                                </div>
-                                <div className="search-username">
-                                    {value.username}
-                                </div>
-                                <div className="search-user-details">
-                                    
-                                </div>
-                            
-                            </div>       
-                                <hr></hr>
-                        </Fragment>
-                    )
+                    if(props.data.length === index + 1){
+                        return(
+                            <SearchUserItem data={value} key={index} ref={ref}/>
+                       )  
+                    }
+                       return(<SearchUserItem data={value} key={index} />)  
                 })
             }
-        
-                
-             
-            
         </div>  
     )
-}
+})
 
 export default SearchUserGrid

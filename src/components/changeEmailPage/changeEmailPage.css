@@ -9,20 +9,26 @@
 }
 
 .changeEmail-form{
-    display: grid;
-    min-height: 250px;
-    max-height: 270px;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: auto;
-    align-items: center;
-    grid-column-gap: 2%;
-    grid-row-gap: 1%;
+    
+    min-height: 300px;
+    max-height: 350px;
+    
 }
 
 .changeEmail-label{
-    justify-self: right;
+    justify-self: right; 
     font-weight: 600;
     
+}
+
+.emailPage-holder{
+    display: grid;
+    width: 100%;
+    margin-bottom: 10px;
+    grid-template-columns: 2fr 3fr 1fr;
+    align-items: center;
+    grid-column-gap: 2%;
+    grid-row-gap: 1%;
 }
 
 .changeEmail-input{
@@ -42,4 +48,17 @@
     width: 50%;
     min-width: 150px;
     max-width: 180px;
+}
+
+.email-tooltip{
+    width: 60%;
+    padding: 10px;
+}
+
+
+
+@media(max-width: 760px){
+    .changeEmail-container form{
+        width: 98%;
+    }
 }

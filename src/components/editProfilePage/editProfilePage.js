@@ -2,7 +2,7 @@ import React from 'react'
 import './editProfilePage.css'
 import GenderRadioButton from '../genderRadioButton/genderRadioButton'
 import {connect} from 'react-redux'
-import {updateUserData} from '../../redux/actions/updateAccount'
+import { updateUserData } from '../../utils/updateSettings'
 
 class EditProfilePage extends React.Component{
 
@@ -28,14 +28,15 @@ class EditProfilePage extends React.Component{
         })
     }
 
-    handleSubmit = event =>{
+    handleSubmit = async(event) =>{
         event.preventDefault()
-        this.props.onUpdateUserData(
+        const result = await updateUserData(
             this.state.userName,
             this.state.firstName,
             this.state.lastName,
             this.state.bio
         )
+        console.log(result) 
     }
 
     render(){
@@ -90,10 +91,10 @@ const mapStateToProps = state =>{
     }
 }
 
-const mapDispatchToProps = dispatch =>{
-    return{
-        onUpdateUserData : (username,firstname, lastname, bio) => dispatch(updateUserData(username,firstname, lastname, bio))
-    }
-}
+// const mapDispatchToProps = dispatch =>{
+//     return{
+//         onUpdateUserData : (username,firstname, lastname, bio) => dispatch(updateUserData(username,firstname, lastname, bio))
+//     }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage)
+export default connect(mapStateToProps)(EditProfilePage)

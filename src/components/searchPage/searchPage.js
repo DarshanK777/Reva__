@@ -1,20 +1,28 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import './searchPage.css'
 import SearchGrid from '../searchGrid/searchGrid'
 import SearchInput from '../searchInput/searchInput'
 import {searchFeedData} from '../../data/searchFeedData'
 import SearchUserGrid from '../searchUserGrid/searchUserGrid'
-import InfiniteScroll from "react-infinite-scroll-component";
-import { connect } from 'react-redux'
-import {searchFeedUser} from '../../redux/actions/feed'
+import { searchFeedUser, searchFeedNextUser } from '../../utils/feedApiCalls'
 
 
 class SearchPage extends React.Component{
 
+    constructor(props){
+        super(props)
+        this.userRef = React.createRef()
+    }
+
     state = {
         images: searchFeedData,
         posts: true,
-        // user: false
+        loading : false,
+        feedLoading : true,
+        hasMoreUsers : true,
+        nextUsers : false,
+        userList: '',
+
     }
     
     chunkImages(myArray){
@@ -26,7 +34,7 @@ class SearchPage extends React.Component{
             var myChunk = myArray.slice(index, index+11)
             tempArray.push(myChunk)
         }
-    
+        // console.log(tempArray)
         return tempArray;
     }
 
@@ -35,18 +43,51 @@ class SearchPage extends React.Component{
             posts: data
         })
     }
-    
-    getValue = (value) =>{
-        this.props.getUsers(value)
-        console.log(this.props.searchUserData)
+
+    loadFeed = async (value) =>{
+        this.setState({
+            loading: true,
+            value : true
+        })
+        setTimeout(async ()=>{
+            let usersData 
+
+            if(this.state.nextUsers !== false) {
+                usersData = await searchFeedNextUser(this.state.nextUsers)
+            }
+            else{
+            usersData = await searchFeedUser(value)
+            }
+            console.log(usersData)
+            this.setState(prevData =>{
+                return{
+                hasMoreUsers : usersData.next !== null ? true : false,
+                nextUsers : usersData.next !== null ?   usersData.next : false,
+                userList : [
+                    ...prevData.userList,
+                    ...usersData.results
+                ],
+                loading: false 
+            }})
+        }, 3000)
+
     }
 
-       
-    handleNext = (next) =>{
-        if(next !== false){
-            // dispatch(loadNextMainFeed(next))
-        }    
+    scrollFeedUsers = node =>{
+        
+        if(!node) return
+        console.log(node)
+        if(this.userRef.current) this.userRef.current.disconnect()
+        this.userRef.current = new IntersectionObserver(entries =>{
+            if(entries[0].isIntersecting && this.state.hasMoreUsers ){
+                console.log('visible')
+                this.loadFeed()
+            }
+        })
+        if(node)  this.userRef.current.observe(node)
+        console.log(this.userRef.current)
     }
+
 
     render(){
 
@@ -56,9 +97,9 @@ class SearchPage extends React.Component{
         return(
             <div className="searchpage-container">
                 {
-                    console.log(this.props)
-                }
-                <SearchInput inputValue={this.getValue}  tab={this.tabSelect}/>
+                console.log(this.userRef.current)
+            }
+                <SearchInput inputValue={this.loadFeed}  tab={this.tabSelect}/>
                 {
                     this.state.posts ?  
                         <div className="searchgrid-container">
@@ -68,50 +109,21 @@ class SearchPage extends React.Component{
                             ))
                         }
                         </div> :
-                        this.props.Udata !== "" ? 
-                        // need infinite class to style the outer div of the infinte scroll component
-                        <div className='infinite'>
-                            <InfiniteScroll
-                            style={{
-                                height: "100%",
-                                width: "100%",
-                                overflow:"none"
-                            }}
-                            dataLength={this.props.Ucount}
-                            next = {this.handleNext(this.props.Unext)}
-                            hasMore={this.props.Unext}
-                            loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
-                            endMessage={
-                            <p style={{ textAlign: "center", bottom: 0 }}>
-                                end of users
-                            </p>}>
-                                <SearchUserGrid data={this.props.Udata} count={this.props.Ucount} next={this.props.Unext} />
-                            </InfiniteScroll>
-                        </div>
+                        this.state.value ? 
+                           this.state.loading ? <h1> loading </h1> : <Fragment>
+                                <SearchUserGrid ref={this.scrollFeedUsers} data={this.state.userList} handleClick={this.handleClick} />
+                               
+                           </Fragment>
                         : 
                         <h1>
                             search to find users
-                        </h1>   
-                    
-
+                        </h1>
                }
             </div>
         )
     }
 }
 
-const mapStateToProps = (state) =>{
-    return{
-        Ucount : state.searchUC,
-        Unext : state.searchUNext,
-        Udata : state.searchUserData
-    }
-}
 
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        getUsers : (value) => dispatch(searchFeedUser(value))
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage)
+export default SearchPage

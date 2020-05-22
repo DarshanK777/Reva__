@@ -34,34 +34,37 @@ const UserProfile = (props) =>{
         })
         if(node) observer.current.observe(node)
 
-        console.log(node)
+        // console.log(node)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading, hasMore])  
 
     // load feed
     const loadFeed = async () =>{
-        let data
-        setLoading(true)
-        if (next!==false){
-            data = await getUserNextFeed(next)
-        }
-        else{
-            data = await getUserFeed(userId)
-        }
-        setFeed(prevState =>{
-            return [
-                ...prevState,
-                ...data.results
-            ]
-        })
-        setNext(
-            data.next!==null ? data.next : false
-        )
-        setHasMore(
-            data.next === null ? false : true
-        )
-        setLoading(false)
-        setFeedLoading(false)
+        console.log('inside')
+        setTimeout(async ()=>{
+            let data
+            setLoading(true)
+            if (next!==false){
+                data = await getUserNextFeed(next)
+            }
+            else{
+                data = await getUserFeed(userId)
+            }
+            setFeed(prevState =>{
+                return [
+                    ...prevState,
+                    ...data.results
+                ]
+            })
+            setNext(
+                data.next!==null ? data.next : false
+            )
+            setHasMore(
+                data.next === null ? false : true
+            )
+            setLoading(false)
+            setFeedLoading(false)
+        }, 5000)
     }
 
     useEffect(()=>{

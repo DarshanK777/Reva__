@@ -20,6 +20,8 @@ from rest_framework import filters
 from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
 
 User = get_user_model()
 
@@ -118,3 +120,18 @@ class PostListView(ListCreateAPIView):
     def get_queryset(self):
         return Post.objects.annotate(post_likes=Max('likes')).order_by("-post_likes")
         # has to use annotate to denormalize the set into one instance of each object
+
+# liking and unlinking the post 
+@api_view(['POST'])
+def like_post(request, id):
+
+    post = Post.objects.get(id=id)   
+    user = request.user
+    
+    if user in post.likes.all():
+        post.likes.remove(user)
+    else:
+        post.likes.add(user)
+    return JsonResponse({
+        'done': 200
+    })

@@ -27,11 +27,6 @@ class GetOneUser(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
     
-    # def get_queryset(self):
-    #     username = self.kwargs['pk']
-    #     print(User.objects.filter(username=username))
-    #     return User.objects.filter(username=username)
-
     def get_object(self):
         username = self.kwargs['pk']
         return User.objects.get(username=username)

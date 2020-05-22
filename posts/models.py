@@ -11,6 +11,7 @@ class Post(models.Model):
     posted_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
     caption = models.CharField(blank=True, null=True, max_length=150)
+    likes = models.ManyToManyField(User, blank=True, related_name='post_likes')
 
     class Meta:
         default_related_name = 'posts'
@@ -18,6 +19,8 @@ class Post(models.Model):
 
     def __str__(self):
         return "{} : {}".format(self.user.username, self.posted_at)
+        
+    
 
 class Comments(models.Model):
     post = models.ForeignKey('Post', related_name='post_by', on_delete=models.CASCADE)
@@ -30,14 +33,3 @@ class Comments(models.Model):
 
     def __str__(self):
         return "{}: {}".format(self.post, self.from_user) 
-
-class Likes(models.Model):
-    post = models.ForeignKey('Post', related_name='post_liked', on_delete=models.CASCADE)
-    from_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        default_related_name = 'likes'
-
-    def __str__(self):
-        return " {} : {}".format(self.post, self.from_user)

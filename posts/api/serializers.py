@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from posts.models import Post, Comments, Likes
+from posts.models import Post, Comments
 from django.contrib.auth import get_user_model
 from accounts.api.serializers import UserSerializer
 from rest_framework.authtoken.models import Token
@@ -32,7 +32,7 @@ class PostSerializer(serializers.ModelSerializer):
         return Comments.objects.filter(post=post).count()
 
     def get_likes(self, post):
-        return Likes.objects.filter(post=post).count()
+        return (post.likes).count()
         
 
 # comment serializer

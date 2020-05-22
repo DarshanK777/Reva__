@@ -14,6 +14,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
 from django.db.models import Q
 import itertools
+from django.db.models import Max
 from datetime import datetime
 from rest_framework import filters
 from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
@@ -108,3 +109,12 @@ class CommentList(ListCreateAPIView):
             'message': 'Comment Successfull',
             'data': response.data
         })
+
+
+class PostListView(ListCreateAPIView):
+
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        return Post.objects.annotate(post_likes=Max('likes')).order_by("-post_likes")
+        # has to use annotate to denormalize the set into one instance of each object

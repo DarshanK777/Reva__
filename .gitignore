@@ -22,17 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/env
-
-./UPLOADS
-
-.env/
-
-env
-
-.vscode/
-.vscode
-.env 
-
-
-UPLOADS/
+.test
+.test/

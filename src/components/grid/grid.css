@@ -5,6 +5,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
+    height: 100%;
     margin-bottom: 20px;
 }
 
@@ -25,7 +26,6 @@
 
   @media (max-width: 760px) {
     .grid-container{
-        
         grid-template-columns: 1fr;
     }
   }

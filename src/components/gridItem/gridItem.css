@@ -1,6 +1,6 @@
 .grid-item{
     width: 100%;
-    
+    height: 100%;
 }
 .grid-item img{
     width: 100%;
@@ -9,19 +9,29 @@
 
 .grid-item-details{
     margin-top: 0;
-    height: 35px;
+    height: 2.5%; 
     display: flex;
     flex-direction: row;
     align-items: flex-end;
     padding: 0 8px;
+    justify-content: space-between;
 }
 
 .avatar { 
-    height: 30px;
-    width: 30px;
-    background: #ccc;
+    height: 100%;
+    width: auto;
+    position: relative;
+    background: rgb(156, 24, 24);
     border-radius: 50%;
     margin-right: 8px;
+}
+
+.avatar img{
+    height: 100%;
+    width: auto;
+    border-radius: 50%;
+    object-fit: contain;
+
 }
 
 .grid-username{
@@ -31,7 +41,64 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    height: 100%;
+    width: 100%;
 } 
+
+
+.grid-item-misc{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    height: 100%;
+    width: 50%;
+    /* background-color: teal; */
+}
+
+.grid-item-likes{
+    height: 100%;
+    width: auto;
+    padding: 2%;
+    /* background: thistle; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.grid-item-likes span{
+    font-weight: 200;
+}
+.grid-item-likes img{
+    height: 100%;
+    width: auto;
+    margin-right: 15%;
+    cursor: pointer;
+}
+
+
+.grid-item-comments{
+    height: 100%;
+    width: auto;
+    padding: 2%;
+    /* background: darkblue; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5%;
+
+}
+
+.grid-item-comments span{
+    font-weight: 200;
+
+}
+.grid-item-comments img{
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+}
 /* 
 @media (max-width: 1400px){
     .grid-item{

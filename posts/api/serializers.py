@@ -11,10 +11,11 @@ class PostSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     post_comment_count = serializers.SerializerMethodField()
     likes = serializers.SerializerMethodField()
+    liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ('pk', 'user', 'post_comment_count', 'posted_at', 'caption', 'likes', 'image')
+        fields = ('pk', 'user', 'post_comment_count', 'posted_at', 'caption', 'likes', 'image', 'liked')
         read_only_fields = ('posted_at',) 
      
     # overiding update method
@@ -33,6 +34,15 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_likes(self, post):
         return (post.likes).count()
+
+    def get_liked(self, post):
+        user = self.context['request'].user
+        if user in post.likes.all(): 
+            return True
+        else:
+            return False
+        
+      
         
 
 # comment serializer

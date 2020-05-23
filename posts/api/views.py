@@ -21,7 +21,8 @@ from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 
@@ -70,6 +71,11 @@ class PostListCreateView(ListCreateAPIView):
             'message': 'Success',
             'data': response.data
         })
+
+    def get_serializer_context(self):
+        context = super(PostListCreateView, self).get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
 
 class MainFeed(APIView):
@@ -121,8 +127,14 @@ class PostListView(ListCreateAPIView):
         return Post.objects.annotate(post_likes=Max('likes')).order_by("-post_likes")
         # has to use annotate to denormalize the set into one instance of each object
 
+    def get_serializer_context(self):
+        context = super(PostListView, self).get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
 # liking and unlinking the post 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def like_post(request, id):
 
     post = Post.objects.get(id=id)   
@@ -130,8 +142,13 @@ def like_post(request, id):
     
     if user in post.likes.all():
         post.likes.remove(user)
+        return JsonResponse({
+            'liked': False
+        })
+
     else:
         post.likes.add(user)
-    return JsonResponse({
-        'done': 200
-    })
+        return JsonResponse({
+            'liked': True
+        })
+   

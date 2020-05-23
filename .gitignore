@@ -26,6 +26,6 @@ yarn-error.log*
 
 ./UPLOADS
 
-
+.env/
 
 UPLOADS/

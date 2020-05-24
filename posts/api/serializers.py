@@ -52,7 +52,7 @@ class CommentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comments
-        fields = ('from_user', 'post', 'comment_content', 'timestamp') 
+        fields = ('pk', 'from_user', 'post', 'comment_content', 'timestamp') 
 
 
 # class FeedSerializer(serializers.Serializer):

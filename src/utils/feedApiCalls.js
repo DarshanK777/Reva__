@@ -121,3 +121,79 @@ export const likeSystemApi = async (id) =>{
         } 
     }
 }
+
+
+export const getPostComment = async (imageId) =>{
+
+    try{
+        const res = await axios.get(`${PORT_NO}/api/posts/commentsFeed/${imageId}`,tokenConfig())
+        return res.data
+    }catch(error){
+        if (error.response) {
+            return {
+                errors : error.response.data
+            }
+        }
+    }
+  
+  }
+
+  
+export const postComment = async (imageId, comment_content) =>{
+  
+    try{
+        const res = await axios.post(`${PORT_NO}/api/posts/commentsFeed/${imageId}/`,{
+            comment_content
+        }, tokenConfig())
+        return getPostComment(imageId)
+    }catch(error){
+        if (error.response) {
+            return {
+                errors : error.response.data
+            }
+        }
+    }
+  
+}
+
+
+export const deletePost = async (postId) =>{
+    try{
+        const res = await axios.delete(`${PORT_NO}/api/posts/ListUpdate/${postId}/`, tokenConfig())
+        return res.data
+    }catch(error){
+        if (error.response) {
+            return {
+                errors : error.response.data
+            }
+        }
+    }
+}
+
+export const editComment = async (commentId, comment_content) =>{
+    try{
+        const res = await axios.patch(`${PORT_NO}/api/posts/commentEdit/${commentId}/`, {
+            comment_content
+        },tokenConfig())
+        return res.data
+    }catch(error){
+        if(error.response){
+            return{
+                errors : error.response.data
+            }
+        }
+    }
+}
+
+export const deleteComment = async (commentId) =>{
+    try{
+        const res = await axios.delete(`${PORT_NO}/api/posts/commentEdit/${commentId}/`, tokenConfig())
+        return res.data
+    }catch(error){
+        if(error.response){
+            return{
+                errors : error.response.data
+            }
+        }
+    }
+}

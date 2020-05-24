@@ -9,18 +9,24 @@ const GridItem = React.forwardRef((props, ref)=>{
     }
 
     const handleOnClickItem = () =>{
-        props.history.push('/detailsPage/', props.data)
+        props.history.push('/detailsPage/', {data :{
+            state : props.data,
+            likes : likes,
+            liked : liked 
+        }})
     }
 
     const handleOnClickLike = async (pk) =>{
-        console.log(pk)
+        
         const res = await likeSystemApi(pk)
         if(res.liked){
             setLiked(true)
             setLikes(prevState => prevState + 1)
         }else{
             setLiked(false)
-            setLikes(prevState => prevState - 1)
+            if(likes !== 0){
+                setLikes(prevState => prevState - 1)
+            }
         }
     }   
     
@@ -31,9 +37,6 @@ const GridItem = React.forwardRef((props, ref)=>{
     return(
         <div ref={ref} className='grid-item' > 
             <img src={data.image} alt="usasd" onClick={() => handleOnClickItem()} />
-                {
-                    console.log(data)
-                }
             <div className="grid-item-details">
                <div className="grid-details-content">
                     <span className="avatar">

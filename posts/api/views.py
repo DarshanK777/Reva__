@@ -8,7 +8,7 @@ from accounts.api.serializers import UserSerializer
 from rest_framework.response import Response
 from posts.models import Post, Comments
 from accounts.models import Friends
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, RetrieveAPIView 
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView 
 from django.contrib.auth import get_user_model
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
@@ -27,7 +27,7 @@ from rest_framework.permissions import IsAuthenticated
 User = get_user_model()
 
 # updating and gettind a single post
-class PostRetrieveUpdateView(RetrieveUpdateAPIView):
+class PostRetrieveUpdateView(RetrieveUpdateDestroyAPIView):
 
     permission_classes = [permissions.IsAuthenticated]
     queryset = Post.objects.all()
@@ -43,6 +43,17 @@ class PostRetrieveUpdateView(RetrieveUpdateAPIView):
         else:
             return Response({"error": "You dont have Permission"}, status=status.HTTP_403_FORBIDDEN)
 
+    def delete(self, request, pk, *args, **kwargs):
+        instance = self.get_object()
+        print(instance)
+        post = Post.objects.filter(pk=pk)
+        user = post[0].user
+        if(user == request.user):  # check if the requested user is the owner of post
+            self.perform_destroy(instance)
+            return Response({'delete': 'successfull'}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "You dont have Permission", 'delete': 'failure'},
+                            status=status.HTTP_403_FORBIDDEN)
 
 class PostListCreateView(ListCreateAPIView):
 
@@ -117,6 +128,30 @@ class CommentList(ListCreateAPIView):
             'message': 'Comment Successfull',
             'data': response.data
         })
+
+class CommentUpdateDestroy(RetrieveUpdateDestroyAPIView):
+
+    serializer_class = CommentsSerializer
+    queryset = Comments.objects.all()
+
+    def patch(self, request, pk, *args, **kwargs):
+        comment = Comments.objects.get(pk=pk)
+        if request.user == comment.from_user:
+            return self.update(request, *args, **kwargs)
+        else:
+            return Response({
+                'error': 'Not Authorized'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    def delete(self, request, pk, *args, **kwargs):
+        instance = self.get_object()
+        comment = Comments.objects.get(pk=pk)
+        if request.user == comment.from_user:  # check if the requested user is the owner of post
+            self.perform_destroy(instance)
+            return Response({'delete': 'successfull'}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "You dont have Permission", 'delete': 'failure'},
+                            status=status.HTTP_403_FORBIDDEN)
 
 
 class PostListView(ListCreateAPIView):

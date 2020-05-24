@@ -44,15 +44,14 @@
 }
 
 .details-header{
-    /* display: flex; */
+   
     height:10%;
     width: 100%;
-    /* background-color: red; */
     position: absolute;
     top:0;
-    left:0;
-    padding: 2%;
+    left:0; 
     display: flex;
+    justify-content: space-between;
 }
 
 .details-header img{
@@ -87,6 +86,12 @@
     
 } 
 
+.details-header-left{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    padding: 1%;
+}
 
 .details-input{
     position: absolute;
@@ -124,7 +129,7 @@
     width: 100%;
 }
 
-.comment-like{
+.comment-edit{
     height: 100%;
     width: auto;
     padding: 10px;
@@ -134,10 +139,12 @@
     align-self: flex-end;
 }
 
-.comment-like img{
-    height: 100%;
+.comment-edit img{
+    height: 65%;
     width: auto;
     border-radius: 50%;
+    margin-right: 20%;
+    cursor: pointer;
 }
 
 .details-input{
@@ -170,6 +177,61 @@
     width: 100%;
     display: flex;
     margin-bottom: 2%;
+}
+
+.details-user-options{
+    height: 100%;
+    width: 50%;
+    /* background-color: teal; */
+    padding: 1%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.details-likes{
+    height: 100%;
+    width: auto;
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2%;
+
+}
+
+.details-likes img{
+    margin: 5px;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.details-likes span{
+    font-weight: 200;
+}
+
+.details-delete{
+    height: 100%;
+    width: auto;
+    padding: 1%;
+    /* background: thistle; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.details-delete img{
+    height: 100%;
+    width: auto;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.grid-item-likes img{
+    height: 100%;
+    width: auto;
+    margin-right: 15%;
+    cursor: pointer;
 }
 
 

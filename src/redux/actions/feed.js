@@ -46,24 +46,6 @@ export const postImage = (image, caption) => async (dispatch, getState) =>{
 
 }
 
-export const getPostComments = (imageId) => (dispatch, getState) =>{
-
-  dispatch({type: RETRIEVING_COMMENTS})
-
-  axios.get(`${PORT_NO}/api/posts/commentsFeed/${imageId}`,tokenConfig(getState))
-  .then((res)=>{
-      dispatch({
-        type: COMMENTS_RETRIEVED,
-        payload: res.data
-      })
-  }).catch((error)=>{
-      dispatch({
-        type: COMMENT_ERROR,
-      })
-      console.log(error)
-  })
-
-}
 
 
 export const postComments = (imageId, comment_content) => (dispatch, getState) =>{
@@ -91,7 +73,6 @@ export const postComments = (imageId, comment_content) => (dispatch, getState) =
         type: COMMENT_POSTED,
         payload: res.data
       })
-      dispatch(getPostComments(imageId))
   }).catch((error)=>{
       dispatch({
         type: COMMENT_ERROR,

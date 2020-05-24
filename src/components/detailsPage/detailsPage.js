@@ -1,18 +1,56 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './detailsPage.css'
-import {getPostComments, postComments} from '../../redux/actions/feed'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import {getPostComment, postComment, likeSystemApi, deletePost, deleteComment} from '../../utils/feedApiCalls'
 
 const DetailsPage = (props) =>{
     
-    const state = props.location.state
+    const state = props.location.state.data.state  // hell lot of nesting gotta simplify later
     const user = state.user
-    const dispatch = useDispatch()
-    const comments = useSelector(state => state.comments)
-    const inputEl = useRef('');
+    const data = props.location.state.data
+    const currentUser = useSelector(state => state.user)
+    const inputEl = useRef(''); 
+    const [commentList, setCommentList] = useState(null)
+    const [liked, setLiked ] = useState(data.liked)
+    const [likes, setLikes] = useState(data.likes)
+
+    // get post comments at first render
+    const getComments = async (pk) =>{
+        const comments = await getPostComment(pk)
+        setCommentList(comments)
+    }
+
+    const handleOnClickLike = async (pk) =>{
+        const res = await likeSystemApi(pk)
+        if(res.liked){
+            setLiked(true)
+            setLikes(prevState => prevState + 1)
+        }else{
+            setLiked(false)
+            if(likes !== 0){
+                setLikes(prevState => prevState - 1)
+            }
+        }
+    } 
+
+    const handleOnClickDelete = async (postId) =>{
+        const deleted = await deletePost(postId)
+        if(!deleted.errors){
+            props.history.push('/homefeed')
+        }
+        
+    }
+
+    const handleOnClickDeleteComment = async (commentId, postId) =>{
+        const deleted = await deleteComment(commentId)
+        if(!deleted.errors){
+            getComments(postId)
+        }
+        
+    }
 
     useEffect(()=>{
-        dispatch(getPostComments(state.pk))
+        getComments(state.pk)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -20,36 +58,64 @@ const DetailsPage = (props) =>{
     var n = d.toString();
     const date = n.slice(3,15)  
 
-    const handleOnClick = () =>{
+    const handleOnClick = async () =>{
         var comment = inputEl.current.value
-        dispatch(postComments(state.pk, comment))
+        setCommentList(await postComment(state.pk, comment))
     }
 
     return(
         <div className="details">
            <div className="details-container">
             <div className="details-image">
-               
                     <img src={state.image} alt=""/>
                 </div>
-
+                {
+                    console.log(props.location)
+                }
                 <div className="details-comment-section">
                     <div className="details-header">
-                        <img src="/images/03.jpg" alt=""></img>
-                        <div className="details-user">
-                            <span>
-                                {user.username}
-                            </span>
-                            <span>
-                                {date}
-                            </span>
+                        <div className='details-header-left'>
+                            <img src="/images/03.jpg" alt=""></img>
+                            <div className="details-user">
+                                <span>
+                                    {user.username}
+                                </span>
+                                <span>
+                                    {date}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                        <div className="details-user-options">
+                            <div className="details-likes">
+                               
+                                {
+                                    liked ?
+                                    <img src="/images/icons/heart-fill.png" onClick={() => handleOnClickLike(state.pk)} alt=""/>:
+                                    <img src="/images/icons/heart-nofill.png" onClick={() => handleOnClickLike(state.pk)} alt=""/>
+                                }
+
+                                <span>
+                                    {likes}
+                                </span>
+                            </div>
+                            {
+                                currentUser ?
+                                    state.user.pk === currentUser.pk ?
+                                    <div className='details-delete'>
+                                        <img src="/images/icons/delete.png" onClick={() => handleOnClickDelete(state.pk)} alt=""/>
+                                    </div> :
+                                    null :
+                                    null
+                            }
+                        </div>
+                    </div>{
+                        console.log(commentList)
+                    }
                     
                     <div className="details-commentbox">
                         {
-                            comments ?  
-                            comments.map((value, index) =>{
+                            commentList ?  
+                            commentList.map((value, index) =>{
                                 return(
                                     <div className="details-comment" key={index}>
                                         <div className="comment-user">
@@ -58,8 +124,9 @@ const DetailsPage = (props) =>{
                                         <div className="comment-data">
                                             <span> {value.comment_content} </span>
                                         </div>
-                                        <div className="comment-like">
-                                            <img src='/images/02.jpg' alt=""/>
+                                        <div className="comment-edit">
+                                            {/* <img src='/images/02.jpg' alt=""/> */}
+                                            <img src='/images/icons/delete.png' alt='delete' onClick={() => handleOnClickDeleteComment(value.pk, state.pk)} style={{borderRadius : 0}} />
                                         </div>
                                     </div>
                                 )

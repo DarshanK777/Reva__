@@ -142,7 +142,7 @@ export const getPostComment = async (imageId) =>{
 export const postComment = async (imageId, comment_content) =>{
   
     try{
-        const res = await axios.post(`${PORT_NO}/api/posts/commentsFeed/${imageId}/`,{
+        await axios.post(`${PORT_NO}/api/posts/commentsFeed/${imageId}/`,{
             comment_content
         }, tokenConfig())
         return getPostComment(imageId)

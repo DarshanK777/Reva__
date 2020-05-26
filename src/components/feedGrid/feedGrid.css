@@ -2,6 +2,14 @@
     width: 70%;
 }
 
+.feedgridloader{
+    height: 90vh;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
 @media (max-width: 1400px) {
     
     .feedGrid-container{

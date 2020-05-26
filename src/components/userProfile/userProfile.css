@@ -25,6 +25,14 @@
     scrollbar-width: none
 }
 
+.userprofileloader{
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .profilePosts::-webkit-scrollbar { 
     display: none; 
 } 

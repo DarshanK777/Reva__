@@ -2,7 +2,7 @@ import React,{useEffect, useState, useRef, useCallback, Fragment} from 'react'
 import './feedGrid.css'
 import Grid from '../grid/grid'
 import {useSelector} from 'react-redux'
-
+import { ClipLoading } from '../loader/loader'
 import {getMainFeed, getNextMainFeed} from '../../utils/feedApiCalls'
 
 
@@ -34,9 +34,10 @@ const FeedGrid = (props) =>{
     // api call
     const loadFeed = async () =>{
         console.log('inside')
+        setLoading(true)
         setTimeout(async ()=>{
             let data
-            setLoading(true)
+           
             if (next!==false){
                 data = await getNextMainFeed(next)
             }
@@ -58,7 +59,7 @@ const FeedGrid = (props) =>{
             )
             setLoading(false)
             setFeedLoading(false)
-        }, 5000)
+        }, 3000)
     }
 
     // loading the feed on component mount
@@ -71,14 +72,19 @@ const FeedGrid = (props) =>{
 
     return(
         <div className='feedGrid-container'> 
-             {
-                feedLoading ? 
-                    <h1>loading</h1>
-                :
+
+           { feedLoading ? 
+                    <div className="feedgridloader">
+                        <ClipLoading/>
+                    </div> :
                     <Fragment>
-                        <Grid {...props} ref={lastGridItem} feed={mainFeedData}/>
-                    <div>{loading && 'Loading...'}</div>
+                        {
+                            console.log(loading)
+                        }
+                        <Grid {...props} ref={lastGridItem} load={loading} feed={mainFeedData}/>
+                    
                     </Fragment>
+                
             }
         </div>
     )

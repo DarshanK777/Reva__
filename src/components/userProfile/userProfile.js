@@ -5,6 +5,8 @@ import {useSelector, useDispatch, shallowEqual} from 'react-redux'
 import { logout, loadUserOnUsername } from '../../redux/actions/auth'
 import { sendFollowRequest } from '../../redux/actions/updateAccount'
 import {getUserFeed, getUserNextFeed} from '../../utils/feedApiCalls'
+import { ClipLoading } from '../loader/loader'
+
 
 const UserProfile = (props) =>{
 
@@ -41,9 +43,10 @@ const UserProfile = (props) =>{
     // load feed
     const loadFeed = async () =>{
         console.log('inside')
+        setLoading(true)
         setTimeout(async ()=>{
             let data
-            setLoading(true)
+            
             if (next!==false){
                 data = await getUserNextFeed(next)
             }
@@ -60,7 +63,7 @@ const UserProfile = (props) =>{
                 data.next!==null ? data.next : false
             )
             setHasMore(
-                data.next === null ? false : true
+                data.next !== null ? true : false
             )
             setLoading(false)
             setFeedLoading(false)
@@ -186,13 +189,17 @@ const UserProfile = (props) =>{
                     <div className="profilePosts">
                         {
                             feedLoading ?
-                                <h1>loading</h1>
+                            <div className="userprofileloader">
+                                <ClipLoading/>
+                            </div> 
                                 : 
-                                <Grid ref={lastGridItem} feed={feed}/> 
+                                <Grid ref={lastGridItem} load={loading} feed={feed}/> 
                         }
                     </div>
                 </div>:
-                <h1> loading </h1>
+               <div className="userprofileloader">
+                    <ClipLoading/>
+                </div> 
 
             }
         </Fragment>

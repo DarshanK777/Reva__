@@ -2,6 +2,7 @@
 import React from 'react'
 import GridItem from '../gridItem/gridItem'
 import './grid.css'
+import {SyncLoading} from '../loader/loader'
 
 const Grid = React.forwardRef((props, ref)=>{
     
@@ -19,7 +20,16 @@ const Grid = React.forwardRef((props, ref)=>{
                 
                 return( <GridItem {...props} data={value} key={index} /> )
             })
-            }                    
+            } 
+           
+            {
+               props.load ?
+                <div className='feed-loader'>
+                    <SyncLoading/>   
+                </div>   :
+                null 
+            }
+                           
         </div>
     )
 })
